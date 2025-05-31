@@ -10,4 +10,7 @@ UCLASS()
 class INTERFACEHERO_API AIH_PlayerController : public APlayerController
 {
 	GENERATED_BODY()
+
+protected:
+	virtual void OnPossess(APawn* InPawn) override;	
 };
