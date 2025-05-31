@@ -1,0 +1,21 @@
+# Build
+Binaries
+DerivedDataCache
+Intermediate
+Saved
+Build
+
+#IDE
+.vscode
+.vs
+.idea
+
+# Unreal Projcet files
+*.VC.db
+*.opensdf
+*.opendb
+*.sdf
+*.sln
+*.suo
+*.xcodeproj
+*.xcworkspace
