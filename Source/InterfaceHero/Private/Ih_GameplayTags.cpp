@@ -1,6 +1,6 @@
 ﻿// Copyright Fillipe Romero. All Rights Reserved.
 
-#include "IH_GameplayTags.h"
+#include "Ih_GameplayTags.h"
 
 namespace InterfaceHeroGameplayTags
 {

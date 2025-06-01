@@ -1,10 +1,10 @@
 ﻿// Copyright Fillipe Romero. All Rights Reserved.
 
-#include "InterfaceHero/Public/Player/IH_PlayerController.h"
+#include "InterfaceHero/Public/Player/Ih_PlayerController.h"
 #include "Camera/CameraActor.h"
 #include "Kismet/GameplayStatics.h"
 
-void AIH_PlayerController::OnPossess(APawn* InPawn)
+void AIh_PlayerController::OnPossess(APawn* InPawn)
 {
 	Super::OnPossess(InPawn);
 
