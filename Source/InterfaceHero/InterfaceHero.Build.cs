@@ -17,7 +17,8 @@ public class InterfaceHero : ModuleRules
 			"EnhancedInput",
 			"GameplayTags",
 			"UMG",
-			"CommonUI"
+			"CommonUI",
+			"DeveloperSettings"
 		});
 
 		PrivateDependencyModuleNames.AddRange(new string[] { "CommonUI" });
