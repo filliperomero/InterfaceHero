@@ -9,7 +9,7 @@
 
 class UCommonActivatableWidgetContainerBase;
 
-UCLASS(Abstract, BlueprintType, meta = (DisableNaiveTick))
+UCLASS(Abstract, BlueprintType, meta = (DisableNativeTick))
 class INTERFACEHERO_API UIh_PrimaryLayout : public UCommonUserWidget
 {
 	GENERATED_BODY()
