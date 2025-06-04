@@ -18,3 +18,13 @@ void UIh_CommonButtonBase::NativePreConstruct()
 
 	SetButtonText(ButtonDisplayText);
 }
+
+void UIh_CommonButtonBase::NativeOnCurrentTextStyleChanged()
+{
+	Super::NativeOnCurrentTextStyleChanged();
+
+	if (CommonTextBlock_ButtonText)
+	{
+		CommonTextBlock_ButtonText->SetStyle(GetCurrentTextStyleClass());
+	}
+}
