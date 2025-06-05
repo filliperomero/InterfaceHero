@@ -3,6 +3,7 @@
 #include "Widgets/Components/Ih_CommonButtonBase.h"
 
 #include "CommonTextBlock.h"
+#include "Subsystems/Ih_UISubsystem.h"
 
 void UIh_CommonButtonBase::SetButtonText(FText InText)
 {
@@ -26,5 +27,25 @@ void UIh_CommonButtonBase::NativeOnCurrentTextStyleChanged()
 	if (CommonTextBlock_ButtonText && GetCurrentTextStyleClass())
 	{
 		CommonTextBlock_ButtonText->SetStyle(GetCurrentTextStyleClass());
+	}
+}
+
+void UIh_CommonButtonBase::NativeOnHovered()
+{
+	Super::NativeOnHovered();
+
+	if (!ButtonDescriptionText.IsEmpty())
+	{
+		UIh_UISubsystem::Get(this)->OnButtonDescriptionTextUpdated.Broadcast(this, ButtonDescriptionText);
+	}
+}
+
+void UIh_CommonButtonBase::NativeOnUnhovered()
+{
+	Super::NativeOnUnhovered();
+
+	if (!ButtonDescriptionText.IsEmpty())
+	{
+		UIh_UISubsystem::Get(this)->OnButtonDescriptionTextUpdated.Broadcast(this, FText::GetEmpty());
 	}
 }

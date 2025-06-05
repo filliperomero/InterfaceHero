@@ -9,12 +9,15 @@
 class UIh_ActivatableBase;
 class UIh_PrimaryLayout;
 struct FGameplayTag;
+class UIh_CommonButtonBase;
 
 enum class EAsyncPushWidgetState : uint8
 {
 	OnCreatedBeforePush,
 	AfterPush
 };
+
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnButtonDescriptionTextUpdatedDelegate, UIh_CommonButtonBase*, BroadcastingButton, FText, DescriptionText);
 
 UCLASS()
 class INTERFACEHERO_API UIh_UISubsystem : public UGameInstanceSubsystem
@@ -30,6 +33,9 @@ public:
 	void RegisterCreatedPrimaryLayoutWidget(UIh_PrimaryLayout* InCreatedWidget);
 
 	void PushSoftWidgetToStackAsync(const FGameplayTag& InWidgetStackTag, TSoftClassPtr<UIh_ActivatableBase> InSoftWidgetClass, TFunction<void(EAsyncPushWidgetState, UIh_ActivatableBase*)> AsyncPushStateCallback);
+
+	UPROPERTY(BlueprintAssignable)
+	FOnButtonDescriptionTextUpdatedDelegate OnButtonDescriptionTextUpdated;
 
 private:
 	UPROPERTY(Transient)
