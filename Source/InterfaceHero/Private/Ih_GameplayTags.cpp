@@ -14,4 +14,5 @@ namespace InterfaceHeroGameplayTags
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Widget_PressAnyKeyScreen, "Widget.PressAnyKeyScreen", "");
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Widget_MainMenuScreen, "Widget.MainMenuScreen", "");
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Widget_ConfirmScreen, "Widget.ConfirmScreen", "");
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Widget_StoryScreen, "Widget.StoryScreen", "");
 }
