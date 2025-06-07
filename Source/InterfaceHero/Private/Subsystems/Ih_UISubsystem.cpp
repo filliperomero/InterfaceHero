@@ -1,10 +1,13 @@
 ﻿// Copyright Fillipe Romero. All Rights Reserved.
 
 #include "Subsystems/Ih_UISubsystem.h"
+#include "Ih_FunctionLibrary.h"
 #include "Engine/AssetManager.h"
 #include "Widgets/CommonActivatableWidgetContainer.h"
 #include "Widgets/Ih_ActivatableBase.h"
+#include "Widgets/Ih_ConfirmScreen.h"
 #include "Widgets/Ih_PrimaryLayout.h"
+#include "Ih_GameplayTags.h"
 
 UIh_UISubsystem* UIh_UISubsystem::Get(const UObject* WorldContextObject)
 {
@@ -61,5 +64,40 @@ void UIh_UISubsystem::PushSoftWidgetToStackAsync(const FGameplayTag& InWidgetSta
 
 			AsyncPushStateCallback(EAsyncPushWidgetState::AfterPush, CreatedWidget);
 		})
+	);
+}
+
+void UIh_UISubsystem::PushConfirmScreenToModalStackAsync(EIh_ConfirmScreenType InScreenType, const FText& InScreenTitle, const FText& InScreenMessage, TFunction<void(EIh_ConfirmScreenButtonType)> ButtonClickedCallback)
+{
+	UIh_ConfirmScreenInfoObject* CreatedInfoObject = nullptr;
+	
+	switch (InScreenType)
+	{
+	case EIh_ConfirmScreenType::Ok:
+		CreatedInfoObject = UIh_ConfirmScreenInfoObject::CreateOkScreen(InScreenTitle, InScreenMessage);
+		break;
+	case EIh_ConfirmScreenType::YesNo:
+		CreatedInfoObject = UIh_ConfirmScreenInfoObject::CreateYesNoScreen(InScreenTitle, InScreenMessage);
+		break;
+	case EIh_ConfirmScreenType::OkCancel:
+		CreatedInfoObject = UIh_ConfirmScreenInfoObject::CreateOkCancelScreen(InScreenTitle, InScreenMessage);
+		break;
+	default:
+		break;
+	}
+
+	check(CreatedInfoObject);
+
+	PushSoftWidgetToStackAsync(
+		InterfaceHeroGameplayTags::WidgetStack_Modal,
+		UIh_FunctionLibrary::GetSoftWidgetClassByTag(InterfaceHeroGameplayTags::Widget_ConfirmScreen),
+		[CreatedInfoObject, ButtonClickedCallback](EAsyncPushWidgetState InPushState, UIh_ActivatableBase* PushedWidget)
+		{
+			if (InPushState == EAsyncPushWidgetState::OnCreatedBeforePush)
+			{
+				UIh_ConfirmScreen* CreatedConfirmScreen = CastChecked<UIh_ConfirmScreen>(PushedWidget);
+				CreatedConfirmScreen->InitConfirmScreen(CreatedInfoObject, ButtonClickedCallback);
+			}
+		}
 	);
 }
