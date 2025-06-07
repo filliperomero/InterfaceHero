@@ -18,10 +18,11 @@ public class InterfaceHero : ModuleRules
 			"GameplayTags",
 			"UMG",
 			"CommonUI",
-			"DeveloperSettings"
+			"DeveloperSettings",
+			"CommonInput"
 		});
 
-		PrivateDependencyModuleNames.AddRange(new string[] { "CommonUI" });
+		PrivateDependencyModuleNames.AddRange(new string[] { "CommonUI", "CommonInput" });
 
 		// Uncomment if you are using Slate UI
 		// PrivateDependencyModuleNames.AddRange(new string[] { "Slate", "SlateCore" });
