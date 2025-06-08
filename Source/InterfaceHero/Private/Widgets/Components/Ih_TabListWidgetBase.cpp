@@ -6,6 +6,12 @@
 
 void UIh_TabListWidgetBase::RequestRegisterTab(const FName& InTabID, const FText& InTabDisplayName)
 {
+	RegisterTab(InTabID, TabButtonEntryWidgetClass, nullptr);
+
+	if (UIh_CommonButtonBase* FoundButton = Cast<UIh_CommonButtonBase>(GetTabButtonBaseByID(InTabID)))
+	{
+		FoundButton->SetButtonText(InTabDisplayName);
+	}
 }
 
 #if WITH_EDITOR
