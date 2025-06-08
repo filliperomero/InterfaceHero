@@ -13,6 +13,9 @@ class INTERFACEHERO_API UIh_TabListWidgetBase : public UCommonTabListWidgetBase
 {
 	GENERATED_BODY()
 
+public:
+	void RequestRegisterTab(const FName& InTabID, const FText& InTabDisplayName);
+
 private:
 #if WITH_EDITOR
 	virtual void ValidateCompiledDefaults(class IWidgetCompilerLog& CompileLog) const override;

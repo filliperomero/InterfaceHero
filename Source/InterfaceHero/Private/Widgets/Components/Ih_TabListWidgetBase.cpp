@@ -4,6 +4,10 @@
 #include "Editor/WidgetCompilerLog.h"
 #include "Widgets/Components/Ih_CommonButtonBase.h"
 
+void UIh_TabListWidgetBase::RequestRegisterTab(const FName& InTabID, const FText& InTabDisplayName)
+{
+}
+
 #if WITH_EDITOR
 void UIh_TabListWidgetBase::ValidateCompiledDefaults(IWidgetCompilerLog& CompileLog) const
 {
