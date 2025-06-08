@@ -24,6 +24,9 @@ private:
 	void OnResetBoundActionTrigger();
 	void OnBackBoundActionTrigger();
 
+	UFUNCTION()
+	void OnOptionsTabSelected(FName TabId);
+
 	/** Bound Widgets */
 	UPROPERTY(meta = (BindWidget))
 	TObjectPtr<UIh_TabListWidgetBase> TabListWidget_OptionsTabs;
