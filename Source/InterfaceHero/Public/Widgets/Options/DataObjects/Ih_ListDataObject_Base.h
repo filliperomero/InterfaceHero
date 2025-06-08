@@ -19,7 +19,8 @@ public:
 	/** Empty in base class. Child class ListDataObject_Collection should override it.
 	 * The function should return all the child data a tab has
 	 */
-	virtual TArray<UIh_ListDataObject_Base*> GetChildSettingData() const { return TArray<UIh_ListDataObject_Base*>(); };
+	virtual TArray<UIh_ListDataObject_Base*> GetChildListData() const { return TArray<UIh_ListDataObject_Base*>(); }
+	virtual bool HasChildListData() const { return false; }
 
 private:
 	FName DataID;
