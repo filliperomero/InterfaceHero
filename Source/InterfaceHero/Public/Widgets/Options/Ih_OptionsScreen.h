@@ -8,6 +8,7 @@
 
 class UIh_TabListWidgetBase;
 class UIh_OptionsDataRegistry;
+class UIh_CommonListView;
 
 UCLASS(Abstract, BlueprintType, meta = (DisableNativeTick))
 class INTERFACEHERO_API UIh_OptionsScreen : public UIh_ActivatableBase
@@ -30,6 +31,9 @@ private:
 	/** Bound Widgets */
 	UPROPERTY(meta = (BindWidget))
 	TObjectPtr<UIh_TabListWidgetBase> TabListWidget_OptionsTabs;
+
+	UPROPERTY(meta = (BindWidget))
+	TObjectPtr<UIh_CommonListView> CommonListView_OptionsList;
 	/** Bound Widgets */
 
 	// Handle the creation of data in the option's screen. Direct access to this variable is forbidden

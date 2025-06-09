@@ -25,7 +25,7 @@ public class InterfaceHero : ModuleRules
 		PrivateDependencyModuleNames.AddRange(new string[] { "CommonUI", "CommonInput" });
 
 		// Uncomment if you are using Slate UI
-		// PrivateDependencyModuleNames.AddRange(new string[] { "Slate", "SlateCore" });
+		PrivateDependencyModuleNames.AddRange(new string[] { "Slate", "SlateCore" });
 		
 		// Uncomment if you are using online features
 		// PrivateDependencyModuleNames.Add("OnlineSubsystem");
