@@ -6,7 +6,7 @@
 #include "Ih_ListDataObject_Base.h"
 #include "Ih_ListDataObject_Value.generated.h"
 
-UCLASS()
+UCLASS(Abstract)
 class INTERFACEHERO_API UIh_ListDataObject_Value : public UIh_ListDataObject_Base
 {
 	GENERATED_BODY()

@@ -10,7 +10,7 @@
 	FORCEINLINE DataType Get##PropertyName() const { return PropertyName; } \
 	void Set##PropertyName(DataType In##PropertyName) { PropertyName = In##PropertyName; }
 
-UCLASS()
+UCLASS(Abstract)
 class INTERFACEHERO_API UIh_ListDataObject_Base : public UObject
 {
 	GENERATED_BODY()
