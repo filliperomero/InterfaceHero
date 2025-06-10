@@ -6,6 +6,7 @@
 #include "UObject/Object.h"
 #include "Ih_OptionsDataRegistry.generated.h"
 
+class UIh_ListDataObject_Base;
 class UIh_ListDataObject_Collection;
 
 UCLASS()
@@ -16,6 +17,7 @@ class INTERFACEHERO_API UIh_OptionsDataRegistry : public UObject
 public:
 	// Called by options screen right after the object of type OptionsDataRegistry is created
 	void InitOptionsDataRegistry(ULocalPlayer* InOwningLocalPlayer);
+	TArray<UIh_ListDataObject_Base*> GetListSourceItemsBySelectedTabID(const FName& InSelectedTabID) const;
 
 private:
 	void InitGameplayCollectionTab();

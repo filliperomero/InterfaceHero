@@ -4,6 +4,7 @@
 #include "ICommonInputModule.h"
 #include "Ih_DebugHelper.h"
 #include "Input/CommonUIInputTypes.h"
+#include "Widgets/Components/Ih_CommonListView.h"
 #include "Widgets/Components/Ih_TabListWidgetBase.h"
 #include "Widgets/Options/Ih_OptionsDataRegistry.h"
 #include "Widgets/Options/DataObjects/Ih_ListDataObject_Collection.h"
@@ -75,5 +76,14 @@ void UIh_OptionsScreen::OnBackBoundActionTrigger()
 
 void UIh_OptionsScreen::OnOptionsTabSelected(FName TabId)
 {
-	Debug::Print(TEXT("New Tab Selected. Tab ID: ") + TabId.ToString());
+	TArray<UIh_ListDataObject_Base*> ListSourceItems = GetOrCreateDataRegistry()->GetListSourceItemsBySelectedTabID(TabId);
+
+	CommonListView_OptionsList->SetListItems(ListSourceItems);
+	CommonListView_OptionsList->RequestRefresh();
+
+	if (CommonListView_OptionsList->GetNumItems() != 0)
+	{
+		CommonListView_OptionsList->NavigateToIndex(0);
+		CommonListView_OptionsList->SetSelectedIndex(0);
+	}
 }

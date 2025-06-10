@@ -2,6 +2,7 @@
 
 #include "Widgets/Options/Ih_OptionsDataRegistry.h"
 #include "Widgets/Options/DataObjects/Ih_ListDataObject_Collection.h"
+#include "Widgets/Options/DataObjects/Ih_ListDataObject_String.h"
 
 void UIh_OptionsDataRegistry::InitOptionsDataRegistry(ULocalPlayer* InOwningLocalPlayer)
 {
@@ -11,11 +12,45 @@ void UIh_OptionsDataRegistry::InitOptionsDataRegistry(ULocalPlayer* InOwningLoca
 	InitControlCollectionTab();
 }
 
+TArray<UIh_ListDataObject_Base*> UIh_OptionsDataRegistry::GetListSourceItemsBySelectedTabID(const FName& InSelectedTabID) const
+{
+	UIh_ListDataObject_Collection* const* FoundTabCollectionPtr = RegisteredOptionsTabCollections.FindByPredicate(
+		[InSelectedTabID](UIh_ListDataObject_Collection* AvailableTabCollection)->bool
+		{
+			return AvailableTabCollection->GetDataID() == InSelectedTabID;
+		}
+	);
+
+	checkf(FoundTabCollectionPtr, TEXT("No valid tab found under the ID %s"), *InSelectedTabID.ToString())
+
+	const UIh_ListDataObject_Collection* FoundTabCollection = *FoundTabCollectionPtr;
+
+	return FoundTabCollection->GetAllChildListData();
+}
+
 void UIh_OptionsDataRegistry::InitGameplayCollectionTab()
 {
 	UIh_ListDataObject_Collection* GameplayTabCollection = NewObject<UIh_ListDataObject_Collection>();
 	GameplayTabCollection->SetDataID(FName("GameplayTabCollection"));
 	GameplayTabCollection->SetDataDisplayName(FText::FromString(TEXT("Gameplay")));
+
+	// Game Difficulty
+	{
+		UIh_ListDataObject_String* GameDifficulty = NewObject<UIh_ListDataObject_String>();
+		GameDifficulty->SetDataID(FName("GameDifficulty"));
+		GameDifficulty->SetDataDisplayName(FText::FromString(TEXT("Difficulty")));
+
+		GameplayTabCollection->AddChildListData(GameDifficulty);
+	}
+
+	// Test Item
+	{
+		UIh_ListDataObject_String* TesteItem = NewObject<UIh_ListDataObject_String>();
+		TesteItem->SetDataID(FName("TesteItem"));
+		TesteItem->SetDataDisplayName(FText::FromString(TEXT("Teste Item")));
+
+		GameplayTabCollection->AddChildListData(TesteItem);
+	}
 
 	RegisteredOptionsTabCollections.Add(GameplayTabCollection);
 }
