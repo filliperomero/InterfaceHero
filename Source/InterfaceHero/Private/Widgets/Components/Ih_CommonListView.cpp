@@ -10,9 +10,12 @@ UUserWidget& UIh_CommonListView::OnGenerateEntryWidgetInternal(UObject* Item, TS
 {
 	if (IsDesignTime()) return Super::OnGenerateEntryWidgetInternal(Item, DesiredEntryClass, OwnerTable);
 
-	TSubclassOf<UIh_ListEntry_Base> WidgetClass = DataListEntryMapping->FindEntryWidgetClassByDataObject(CastChecked<UIh_ListDataObject_Base>(Item));
+	if (TSubclassOf<UIh_ListEntry_Base> WidgetClass = DataListEntryMapping->FindEntryWidgetClassByDataObject(CastChecked<UIh_ListDataObject_Base>(Item)))
+	{
+		return GenerateTypedEntry<UIh_ListEntry_Base>(WidgetClass, OwnerTable);
+	}
 
-	return GenerateTypedEntry<UIh_ListEntry_Base>(WidgetClass, OwnerTable);
+	return Super::OnGenerateEntryWidgetInternal(Item, DesiredEntryClass, OwnerTable);
 }
 
 #if WITH_EDITOR
