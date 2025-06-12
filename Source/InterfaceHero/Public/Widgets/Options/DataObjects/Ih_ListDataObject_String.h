@@ -10,4 +10,17 @@ UCLASS()
 class INTERFACEHERO_API UIh_ListDataObject_String : public UIh_ListDataObject_Value
 {
 	GENERATED_BODY()
+
+public:
+	void AddDynamicOption(const FString& InStringValue, const FText& InDisplayText);
+
+protected:
+	virtual void OnDataObjectInitialized() override
+
+	bool TrySetDisplayTextFromStringValue(const FString& InStringValue);
+	
+	FString CurrentStringValue;
+	FText CurrentDisplayText;
+	TArray<FString> AvailableOptionsStringArray;
+	TArray<FText> AvailableOptionsTextArray;
 };

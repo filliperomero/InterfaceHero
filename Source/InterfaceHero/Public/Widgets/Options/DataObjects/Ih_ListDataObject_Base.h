@@ -24,7 +24,7 @@ public:
 	virtual bool HasAnyChildListData() const { return false; }
 
 protected:
-	// TEmpty in base class. he Child classes should override it to handle the initialization needed accordingly
+	// Empty in base class. The Child classes should override it to handle the initialization needed accordingly
 	virtual void OnDataObjectInitialized();
 
 private:
