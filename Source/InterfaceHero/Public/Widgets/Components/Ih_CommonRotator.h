@@ -10,4 +10,7 @@ UCLASS(Abstract, BlueprintType, meta = (DisableNativeTick))
 class INTERFACEHERO_API UIh_CommonRotator : public UCommonRotator
 {
 	GENERATED_BODY()
+
+public:
+	void SetSelectedOptionByText(const FText& InTextOption);
 };
