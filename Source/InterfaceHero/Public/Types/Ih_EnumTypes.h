@@ -19,3 +19,11 @@ enum class EIh_ConfirmScreenButtonType : uint8
 	Closed,
 	Unknown UMETA(Hidden),
 };
+
+UENUM(BlueprintType)
+enum class EIh_OptionsListDataModifyReason : uint8
+{
+	DirectlyModified,
+	DependencyModified,
+	ResetToDefault
+};

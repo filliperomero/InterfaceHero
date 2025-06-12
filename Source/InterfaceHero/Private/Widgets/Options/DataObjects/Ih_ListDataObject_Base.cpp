@@ -10,3 +10,8 @@ void UIh_ListDataObject_Base::InitDataObject()
 void UIh_ListDataObject_Base::OnDataObjectInitialized()
 {
 }
+
+void UIh_ListDataObject_Base::NotifyListDataModified(UIh_ListDataObject_Base* ModifiedData, EIh_OptionsListDataModifyReason ModifyReason)
+{
+	OnListDataModified.Broadcast(ModifiedData, ModifyReason);
+}

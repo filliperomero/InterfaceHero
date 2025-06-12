@@ -18,4 +18,14 @@ void UIh_ListEntry_Base::OnOwningListDataObjectSet(UIh_ListDataObject_Base* InOw
 	{
 		CommonText_SettingDisplayName->SetText(InOwningListDataObject->GetDataDisplayName());
 	}
+
+	// This check is necessary because everytime we switch back to the tab showing this entry, this function will be called, and we don't want to keep bounding
+	if (!InOwningListDataObject->OnListDataModified.IsBoundToObject(this))
+	{
+		InOwningListDataObject->OnListDataModified.AddUObject(this, &ThisClass::OnOwningListDataObjectModified);
+	}
+}
+
+void UIh_ListEntry_Base::OnOwningListDataObjectModified(UIh_ListDataObject_Base* OwningModifiedData, EIh_OptionsListDataModifyReason ModifyReason)
+{
 }

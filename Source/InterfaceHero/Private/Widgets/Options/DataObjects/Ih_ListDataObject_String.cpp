@@ -8,6 +8,48 @@ void UIh_ListDataObject_String::AddDynamicOption(const FString& InStringValue, c
 	AvailableOptionsTextArray.Add(InDisplayText);
 }
 
+void UIh_ListDataObject_String::AdvanceToNextOption()
+{
+	if (AvailableOptionsStringArray.IsEmpty() || AvailableOptionsTextArray.IsEmpty()) return;
+
+	const int32 CurrentIndex = AvailableOptionsStringArray.IndexOfByKey(CurrentStringValue);
+	const int32 NextIndex = CurrentIndex + 1;
+
+	if (AvailableOptionsStringArray.IsValidIndex(NextIndex))
+	{
+		CurrentStringValue = AvailableOptionsStringArray[NextIndex];
+	}
+	else
+	{
+		CurrentStringValue = AvailableOptionsStringArray[0];
+	}
+
+	TrySetDisplayTextFromStringValue(CurrentStringValue);
+	
+	NotifyListDataModified(this);
+}
+
+void UIh_ListDataObject_String::BackToPreviousOption()
+{
+	if (AvailableOptionsStringArray.IsEmpty() || AvailableOptionsTextArray.IsEmpty()) return;
+
+	const int32 CurrentIndex = AvailableOptionsStringArray.IndexOfByKey(CurrentStringValue);
+	const int32 PreviousIndex = CurrentIndex - 1;
+
+	if (AvailableOptionsStringArray.IsValidIndex(PreviousIndex))
+	{
+		CurrentStringValue = AvailableOptionsStringArray[PreviousIndex];
+	}
+	else
+	{
+		CurrentStringValue = AvailableOptionsStringArray.Last();
+	}
+
+	TrySetDisplayTextFromStringValue(CurrentStringValue);
+	
+	NotifyListDataModified(this);
+}
+
 void UIh_ListDataObject_String::OnDataObjectInitialized()
 {
 	if (!AvailableOptionsStringArray.IsEmpty())

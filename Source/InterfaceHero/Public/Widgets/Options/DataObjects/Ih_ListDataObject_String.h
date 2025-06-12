@@ -13,6 +13,8 @@ class INTERFACEHERO_API UIh_ListDataObject_String : public UIh_ListDataObject_Va
 
 public:
 	void AddDynamicOption(const FString& InStringValue, const FText& InDisplayText);
+	void AdvanceToNextOption();
+	void BackToPreviousOption();
 
 protected:
 	virtual void OnDataObjectInitialized() override;

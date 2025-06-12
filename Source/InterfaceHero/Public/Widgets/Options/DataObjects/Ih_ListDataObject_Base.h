@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Types/Ih_EnumTypes.h"
 #include "UObject/Object.h"
 #include "Ih_ListDataObject_Base.generated.h"
 
@@ -15,7 +16,7 @@ class INTERFACEHERO_API UIh_ListDataObject_Base : public UObject
 {
 	GENERATED_BODY()
 
-public:
+public:	
 	void InitDataObject();
 	/** Empty in base class. Child class ListDataObject_Collection should override it.
 	 * The function should return all the child data a tab has
@@ -26,6 +27,8 @@ public:
 protected:
 	// Empty in base class. The Child classes should override it to handle the initialization needed accordingly
 	virtual void OnDataObjectInitialized();
+
+	virtual void NotifyListDataModified(UIh_ListDataObject_Base* ModifiedData, EIh_OptionsListDataModifyReason ModifyReason = EIh_OptionsListDataModifyReason::DirectlyModified);
 
 private:
 	FName DataID;
@@ -38,6 +41,9 @@ private:
 	TObjectPtr<UIh_ListDataObject_Base> ParentData;
 
 public:
+	DECLARE_MULTICAST_DELEGATE_TwoParams(FOnListDataModifiedDelegate, UIh_ListDataObject_Base*/*ModifiedData*/, EIh_OptionsListDataModifyReason/*ModifyReason*/);
+	FOnListDataModifiedDelegate OnListDataModified;
+	
 	LIST_DATA_ACCESSOR(FName, DataID);
 	LIST_DATA_ACCESSOR(FText, DataDisplayName);
 	LIST_DATA_ACCESSOR(FText, DescriptionRichText);
