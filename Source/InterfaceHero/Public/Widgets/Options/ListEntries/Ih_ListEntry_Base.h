@@ -7,6 +7,7 @@
 #include "Blueprint/IUserObjectListEntry.h"
 #include "Ih_ListEntry_Base.generated.h"
 
+class UIh_ListDataObject_Base;
 class UCommonTextBlock;
 
 UCLASS(Abstract, BlueprintType, meta = (DisableNativeTick))
@@ -16,6 +17,9 @@ class INTERFACEHERO_API UIh_ListEntry_Base : public UCommonUserWidget, public IU
 
 protected:
 	virtual void NativeOnListItemObjectSet(UObject* ListItemObject) override;
+
+	/** The Child Class should override this function to handle the initialization needed. Super call is expected. */
+	virtual void OnOwningListDataObjectSet(UIh_ListDataObject_Base* InOwningListDataObject);
 
 private:
 	/** Bound Widgets */
