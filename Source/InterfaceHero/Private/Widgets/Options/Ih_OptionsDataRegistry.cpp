@@ -1,8 +1,14 @@
 ﻿// Copyright Fillipe Romero. All Rights Reserved.
 
 #include "Widgets/Options/Ih_OptionsDataRegistry.h"
+
+#include "Settings/Ih_GameUserSettings.h"
+#include "Widgets/Options/Ih_OptionsDataInteractionHelper.h"
 #include "Widgets/Options/DataObjects/Ih_ListDataObject_Collection.h"
 #include "Widgets/Options/DataObjects/Ih_ListDataObject_String.h"
+
+#define MAKE_OPTIONS_DATA_CONTROL(SetterOrGetterFuncName) \
+	MakeShared<FIh_OptionsDataInteractionHelper>(GET_FUNCTION_NAME_STRING_CHECKED(UIh_GameUserSettings,SetterOrGetterFuncName))
 
 void UIh_OptionsDataRegistry::InitOptionsDataRegistry(ULocalPlayer* InOwningLocalPlayer)
 {
@@ -34,6 +40,9 @@ void UIh_OptionsDataRegistry::InitGameplayCollectionTab()
 	GameplayTabCollection->SetDataID(FName("GameplayTabCollection"));
 	GameplayTabCollection->SetDataDisplayName(FText::FromString(TEXT("Gameplay")));
 
+	// This is the full code for constructor data interactor helper
+	// TSharedPtr<FIh_OptionsDataInteractionHelper> ConstructedHelper = MakeShared<FIh_OptionsDataInteractionHelper>(GET_FUNCTION_NAME_STRING_CHECKED(UIh_GameUserSettings, GetCurrentGameDifficulty));
+
 	// Game Difficulty
 	{
 		UIh_ListDataObject_String* GameDifficulty = NewObject<UIh_ListDataObject_String>();
@@ -43,6 +52,11 @@ void UIh_OptionsDataRegistry::InitGameplayCollectionTab()
 		GameDifficulty->AddDynamicOption(TEXT("Normal"), FText::FromString(TEXT("Normal")));
 		GameDifficulty->AddDynamicOption(TEXT("Hard"), FText::FromString(TEXT("Hard")));
 		GameDifficulty->AddDynamicOption(TEXT("Very Hard"), FText::FromString(TEXT("Very Hard")));
+
+		GameDifficulty->SetDataDynamicGetter(MAKE_OPTIONS_DATA_CONTROL(GetCurrentGameDifficulty));
+		GameDifficulty->SetDataDynamicSetter(MAKE_OPTIONS_DATA_CONTROL(SetCurrentGameDifficulty));
+
+		GameDifficulty->SetShouldApplyChangeImmediately(true);
 
 		GameplayTabCollection->AddChildListData(GameDifficulty);
 	}

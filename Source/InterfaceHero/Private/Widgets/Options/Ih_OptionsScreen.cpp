@@ -4,6 +4,7 @@
 #include "ICommonInputModule.h"
 #include "Ih_DebugHelper.h"
 #include "Input/CommonUIInputTypes.h"
+#include "Settings/Ih_GameUserSettings.h"
 #include "Widgets/Components/Ih_CommonListView.h"
 #include "Widgets/Components/Ih_TabListWidgetBase.h"
 #include "Widgets/Options/Ih_OptionsDataRegistry.h"
@@ -49,6 +50,14 @@ void UIh_OptionsScreen::NativeOnActivated()
 
 		TabListWidget_OptionsTabs->RequestRegisterTab(TabID, TabCollection->GetDataDisplayName());
 	}
+}
+
+void UIh_OptionsScreen::NativeOnDeactivated()
+{
+	Super::NativeOnDeactivated();
+
+	// Trigger a save on all values we have inside the class to the file
+	UIh_GameUserSettings::Get()->ApplySettings(true);
 }
 
 UIh_OptionsDataRegistry* UIh_OptionsScreen::GetOrCreateDataRegistry()

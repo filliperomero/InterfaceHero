@@ -18,6 +18,7 @@ class INTERFACEHERO_API UIh_OptionsScreen : public UIh_ActivatableBase
 protected:
 	virtual void NativeOnInitialized() override;
 	virtual void NativeOnActivated() override;
+	virtual void NativeOnDeactivated() override;
 
 private:
 	UIh_OptionsDataRegistry* GetOrCreateDataRegistry();

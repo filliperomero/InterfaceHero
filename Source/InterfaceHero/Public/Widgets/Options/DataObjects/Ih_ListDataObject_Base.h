@@ -40,9 +40,13 @@ private:
 	UPROPERTY(Transient)
 	TObjectPtr<UIh_ListDataObject_Base> ParentData;
 
+	bool bShouldApplyChangeImmediately { false };
+
 public:
 	DECLARE_MULTICAST_DELEGATE_TwoParams(FOnListDataModifiedDelegate, UIh_ListDataObject_Base*/*ModifiedData*/, EIh_OptionsListDataModifyReason/*ModifyReason*/);
 	FOnListDataModifiedDelegate OnListDataModified;
+
+	void SetShouldApplyChangeImmediately(bool bShouldApply) { bShouldApplyChangeImmediately = bShouldApply; }
 	
 	LIST_DATA_ACCESSOR(FName, DataID);
 	LIST_DATA_ACCESSOR(FText, DataDisplayName);
