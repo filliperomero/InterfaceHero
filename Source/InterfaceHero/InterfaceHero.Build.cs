@@ -19,7 +19,8 @@ public class InterfaceHero : ModuleRules
 			"UMG",
 			"CommonUI",
 			"DeveloperSettings",
-			"CommonInput"
+			"CommonInput",
+			"PropertyPath"
 		});
 
 		PrivateDependencyModuleNames.AddRange(new string[] { "CommonUI", "CommonInput" });
