@@ -5,6 +5,11 @@
 #include "CommonTextBlock.h"
 #include "Widgets/Options/DataObjects/Ih_ListDataObject_Base.h"
 
+void UIh_ListEntry_Base::NativeOnListEntryWidgetHovered(bool bIsHovered)
+{
+	BP_OnListEntryWidgetHovered(bIsHovered, IsListItemSelected());
+}
+
 void UIh_ListEntry_Base::NativeOnListItemObjectSet(UObject* ListItemObject)
 {
 	IUserObjectListEntry::NativeOnListItemObjectSet(ListItemObject);

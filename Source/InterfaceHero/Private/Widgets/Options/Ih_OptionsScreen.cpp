@@ -9,6 +9,7 @@
 #include "Widgets/Components/Ih_TabListWidgetBase.h"
 #include "Widgets/Options/Ih_OptionsDataRegistry.h"
 #include "Widgets/Options/DataObjects/Ih_ListDataObject_Collection.h"
+#include "Widgets/Options/ListEntries/Ih_ListEntry_Base.h"
 
 void UIh_OptionsScreen::NativeOnInitialized()
 {
@@ -34,6 +35,9 @@ void UIh_OptionsScreen::NativeOnInitialized()
 	);
 
 	TabListWidget_OptionsTabs->OnTabSelected.AddUniqueDynamic(this, &ThisClass::OnOptionsTabSelected);
+
+	CommonListView_OptionsList->OnItemIsHoveredChanged().AddUObject(this, &ThisClass::OnListViewItemHovered);
+	CommonListView_OptionsList->OnItemSelectionChanged().AddUObject(this, &ThisClass::OnListViewItemSelected);
 }
 
 void UIh_OptionsScreen::NativeOnActivated()
@@ -95,4 +99,20 @@ void UIh_OptionsScreen::OnOptionsTabSelected(FName TabId)
 		CommonListView_OptionsList->NavigateToIndex(0);
 		CommonListView_OptionsList->SetSelectedIndex(0);
 	}
+}
+
+void UIh_OptionsScreen::OnListViewItemHovered(UObject* InHoveredItem, bool bIsHovered)
+{
+	if (!IsValid(InHoveredItem)) return;
+
+	UIh_ListEntry_Base* HoveredEntryWidget = CommonListView_OptionsList->GetEntryWidgetFromItem<UIh_ListEntry_Base>(InHoveredItem);
+
+	check(HoveredEntryWidget)
+
+	HoveredEntryWidget->NativeOnListEntryWidgetHovered(bIsHovered);
+}
+
+void UIh_OptionsScreen::OnListViewItemSelected(UObject* InSelectedItem)
+{
+	if (!IsValid(InSelectedItem)) return;
 }

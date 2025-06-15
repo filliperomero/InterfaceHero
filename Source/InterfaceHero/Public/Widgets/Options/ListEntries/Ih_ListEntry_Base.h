@@ -16,6 +16,11 @@ class INTERFACEHERO_API UIh_ListEntry_Base : public UCommonUserWidget, public IU
 {
 	GENERATED_BODY()
 
+public:
+	UFUNCTION(BlueprintImplementableEvent, meta=(DisplayName="On List Entry Widget Hovered"))
+	void BP_OnListEntryWidgetHovered(bool bIsHovered, bool bIsEntryWidgetStillSelected);
+	void NativeOnListEntryWidgetHovered(bool bIsHovered);
+
 protected:
 	virtual void NativeOnListItemObjectSet(UObject* ListItemObject) override;
 
