@@ -11,6 +11,8 @@ void UIh_ListEntry_String::NativeOnInitialized()
 
 	CommonButton_PreviousOption->OnClicked().AddUObject(this, &ThisClass::OnPreviousOptionButtonClicked);
 	CommonButton_NextOption->OnClicked().AddUObject(this, &ThisClass::OnNextOptionButtonClicked);
+
+	CommonRotator_AvailableOptions->OnClicked().AddLambda([this](){SelectThisEntryWidget();});
 }
 
 void UIh_ListEntry_String::OnOwningListDataObjectSet(UIh_ListDataObject_Base* InOwningListDataObject)
@@ -32,14 +34,20 @@ void UIh_ListEntry_String::OnOwningListDataObjectModified(UIh_ListDataObject_Bas
 
 void UIh_ListEntry_String::OnPreviousOptionButtonClicked()
 {
-	if (!IsValid(CachedOwningStringDataObject)) return;
+	if (IsValid(CachedOwningStringDataObject))
+	{
+		CachedOwningStringDataObject->BackToPreviousOption();
+	}
 
-	CachedOwningStringDataObject->BackToPreviousOption();
+	SelectThisEntryWidget();
 }
 
 void UIh_ListEntry_String::OnNextOptionButtonClicked()
 {
-	if (!IsValid(CachedOwningStringDataObject)) return;
+	if (IsValid(CachedOwningStringDataObject))
+	{
+		CachedOwningStringDataObject->AdvanceToNextOption();
+	}
 
-	CachedOwningStringDataObject->AdvanceToNextOption();
+	SelectThisEntryWidget();
 }
