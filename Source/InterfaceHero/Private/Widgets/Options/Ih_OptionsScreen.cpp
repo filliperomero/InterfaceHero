@@ -90,6 +90,8 @@ void UIh_OptionsScreen::OnBackBoundActionTrigger()
 
 void UIh_OptionsScreen::OnOptionsTabSelected(FName TabId)
 {
+	DetailsView_ListEntryInfo->ClearDetailsViewInfo();
+	
 	TArray<UIh_ListDataObject_Base*> ListSourceItems = GetOrCreateDataRegistry()->GetListSourceItemsBySelectedTabID(TabId);
 
 	CommonListView_OptionsList->SetListItems(ListSourceItems);
@@ -114,13 +116,13 @@ void UIh_OptionsScreen::OnListViewItemHovered(UObject* InHoveredItem, bool bIsHo
 
 	if (bIsHovered)
 	{
-		CommonListView_ListEntryInfo->UpdateDetailsViewInfo(CastChecked<UIh_ListDataObject_Base>(InHoveredItem), TryGetEntryWidgetClassName(InHoveredItem));
+		DetailsView_ListEntryInfo->UpdateDetailsViewInfo(CastChecked<UIh_ListDataObject_Base>(InHoveredItem), TryGetEntryWidgetClassName(InHoveredItem));
 	}
 	else
 	{
 		if (UIh_ListDataObject_Base* SelectedItem = CommonListView_OptionsList->GetSelectedItem<UIh_ListDataObject_Base>())
 		{
-			CommonListView_ListEntryInfo->UpdateDetailsViewInfo(SelectedItem, TryGetEntryWidgetClassName(SelectedItem));
+			DetailsView_ListEntryInfo->UpdateDetailsViewInfo(SelectedItem, TryGetEntryWidgetClassName(SelectedItem));
 		}
 	}
 }
@@ -129,7 +131,7 @@ void UIh_OptionsScreen::OnListViewItemSelected(UObject* InSelectedItem)
 {
 	if (!IsValid(InSelectedItem)) return;
 
-	CommonListView_ListEntryInfo->UpdateDetailsViewInfo(CastChecked<UIh_ListDataObject_Base>(InSelectedItem), TryGetEntryWidgetClassName(InSelectedItem));
+	DetailsView_ListEntryInfo->UpdateDetailsViewInfo(CastChecked<UIh_ListDataObject_Base>(InSelectedItem), TryGetEntryWidgetClassName(InSelectedItem));
 }
 
 FString UIh_OptionsScreen::TryGetEntryWidgetClassName(UObject* InOwningListItem) const

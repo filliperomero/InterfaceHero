@@ -42,7 +42,7 @@ private:
 	TObjectPtr<UIh_CommonListView> CommonListView_OptionsList;
 	
 	UPROPERTY(meta = (BindWidget))
-    TObjectPtr<UIh_OptionsDetailsView> CommonListView_ListEntryInfo;
+    TObjectPtr<UIh_OptionsDetailsView> DetailsView_ListEntryInfo;
 	/** Bound Widgets */
 
 	// Handle the creation of data in the option's screen. Direct access to this variable is forbidden
