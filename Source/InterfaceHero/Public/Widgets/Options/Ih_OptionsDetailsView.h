@@ -6,6 +6,7 @@
 #include "Blueprint/UserWidget.h"
 #include "Ih_OptionsDetailsView.generated.h"
 
+class UIh_ListDataObject_Base;
 class UCommonRichTextBlock;
 class UCommonLazyImage;
 class UCommonTextBlock;
@@ -14,6 +15,13 @@ UCLASS(Abstract, BlueprintType, meta = (DisableNativeTick))
 class INTERFACEHERO_API UIh_OptionsDetailsView : public UUserWidget
 {
 	GENERATED_BODY()
+
+public:
+	void UpdateDetailsViewInfo(UIh_ListDataObject_Base* InDataObject, const FString& InEntryWidgetClassName = FString());
+	void ClearDetailsViewInfo();
+
+protected:
+	virtual void NativeOnInitialized() override;
 
 private:
 	/** Bound Widgets */

@@ -8,6 +8,7 @@
 #include "Widgets/Components/Ih_CommonListView.h"
 #include "Widgets/Components/Ih_TabListWidgetBase.h"
 #include "Widgets/Options/Ih_OptionsDataRegistry.h"
+#include "Widgets/Options/Ih_OptionsDetailsView.h"
 #include "Widgets/Options/DataObjects/Ih_ListDataObject_Collection.h"
 #include "Widgets/Options/ListEntries/Ih_ListEntry_Base.h"
 
@@ -110,9 +111,33 @@ void UIh_OptionsScreen::OnListViewItemHovered(UObject* InHoveredItem, bool bIsHo
 	check(HoveredEntryWidget)
 
 	HoveredEntryWidget->NativeOnListEntryWidgetHovered(bIsHovered);
+
+	if (bIsHovered)
+	{
+		CommonListView_ListEntryInfo->UpdateDetailsViewInfo(CastChecked<UIh_ListDataObject_Base>(InHoveredItem), TryGetEntryWidgetClassName(InHoveredItem));
+	}
+	else
+	{
+		if (UIh_ListDataObject_Base* SelectedItem = CommonListView_OptionsList->GetSelectedItem<UIh_ListDataObject_Base>())
+		{
+			CommonListView_ListEntryInfo->UpdateDetailsViewInfo(SelectedItem, TryGetEntryWidgetClassName(SelectedItem));
+		}
+	}
 }
 
 void UIh_OptionsScreen::OnListViewItemSelected(UObject* InSelectedItem)
 {
 	if (!IsValid(InSelectedItem)) return;
+
+	CommonListView_ListEntryInfo->UpdateDetailsViewInfo(CastChecked<UIh_ListDataObject_Base>(InSelectedItem), TryGetEntryWidgetClassName(InSelectedItem));
+}
+
+FString UIh_OptionsScreen::TryGetEntryWidgetClassName(UObject* InOwningListItem) const
+{
+	if (UUserWidget* EntryWidget = CommonListView_OptionsList->GetEntryWidgetFromItem(InOwningListItem))
+	{
+		return EntryWidget->GetClass()->GetName();
+	}
+
+	return TEXT("Entry Widget not valid");
 }
