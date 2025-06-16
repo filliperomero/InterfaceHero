@@ -3,9 +3,11 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Types/Ih_EnumTypes.h"
 #include "Widgets/Ih_ActivatableBase.h"
 #include "Ih_OptionsScreen.generated.h"
 
+class UIh_ListDataObject_Base;
 class UIh_OptionsDetailsView;
 class UIh_TabListWidgetBase;
 class UIh_OptionsDataRegistry;
@@ -33,6 +35,7 @@ private:
 	void OnListViewItemHovered(UObject* InHoveredItem, bool bIsHovered);
 	void OnListViewItemSelected(UObject* InSelectedItem);
 	FString TryGetEntryWidgetClassName(UObject* InOwningListItem) const;
+	void OnListViewListDataModified(UIh_ListDataObject_Base* ModifiedData, EIh_OptionsListDataModifyReason ModifyReason);
 
 	/** Bound Widgets */
 	UPROPERTY(meta = (BindWidget))
@@ -53,4 +56,7 @@ private:
 	FDataTableRowHandle ResetAction;
 
 	FUIActionBindingHandle ResetActionHandle;
+
+	UPROPERTY(Transient)
+	TArray<UIh_ListDataObject_Base*> ResettableDataArray;
 };

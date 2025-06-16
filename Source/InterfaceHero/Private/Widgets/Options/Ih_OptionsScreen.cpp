@@ -102,6 +102,35 @@ void UIh_OptionsScreen::OnOptionsTabSelected(FName TabId)
 		CommonListView_OptionsList->NavigateToIndex(0);
 		CommonListView_OptionsList->SetSelectedIndex(0);
 	}
+
+	ResettableDataArray.Empty();
+
+	for (UIh_ListDataObject_Base* ListSourceItem : ListSourceItems)
+	{
+		if (!IsValid(ListSourceItem)) return;
+
+		if (!ListSourceItem->OnListDataModified.IsBoundToObject(this))
+		{
+			ListSourceItem->OnListDataModified.AddUObject(this, &ThisClass::OnListViewListDataModified);
+		}
+
+		if (ListSourceItem->CanResetBackToDefaultValue())
+		{
+			ResettableDataArray.AddUnique(ListSourceItem);
+		}
+	}
+
+	if (ResettableDataArray.IsEmpty())
+	{
+		RemoveActionBinding(ResetActionHandle);
+	}
+	else
+	{
+		if (!GetActionBindings().Contains(ResetActionHandle))
+		{
+			AddActionBinding(ResetActionHandle);
+		}
+	}
 }
 
 void UIh_OptionsScreen::OnListViewItemHovered(UObject* InHoveredItem, bool bIsHovered)
@@ -142,4 +171,31 @@ FString UIh_OptionsScreen::TryGetEntryWidgetClassName(UObject* InOwningListItem)
 	}
 
 	return TEXT("Entry Widget not valid");
+}
+
+void UIh_OptionsScreen::OnListViewListDataModified(UIh_ListDataObject_Base* ModifiedData, EIh_OptionsListDataModifyReason ModifyReason)
+{
+	if (!IsValid(ModifiedData)) return;
+
+	if (ModifiedData->CanResetBackToDefaultValue())
+	{
+		ResettableDataArray.AddUnique(ModifiedData);
+
+		if (!GetActionBindings().Contains(ResetActionHandle))
+		{
+			AddActionBinding(ResetActionHandle);
+		}
+	}
+	else
+	{
+		if (ResettableDataArray.Contains(ModifiedData))
+		{
+			ResettableDataArray.Remove(ModifiedData);
+		}
+	}
+
+	if (ResettableDataArray.IsEmpty())
+	{
+		RemoveActionBinding(ResetActionHandle);
+	}
 }
