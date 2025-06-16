@@ -83,6 +83,32 @@ void UIh_ListDataObject_String::OnDataObjectInitialized()
 	}
 }
 
+bool UIh_ListDataObject_String::CanResetBackToDefaultValue() const
+{
+	return HasDefaultValue() && CurrentStringValue != GetDefaultValueAsString();
+}
+
+bool UIh_ListDataObject_String::TryResetBackToDefaultValue()
+{
+	if (CanResetBackToDefaultValue())
+	{
+		CurrentStringValue = GetDefaultValueAsString();
+
+		TrySetDisplayTextFromStringValue(CurrentStringValue);
+
+		if (DataDynamicSetter)
+		{
+			DataDynamicSetter->SetValueFromString(CurrentStringValue);
+
+			NotifyListDataModified(this, EIh_OptionsListDataModifyReason::ResetToDefault);
+
+			return true;
+		}
+	}
+
+	return false;
+}
+
 bool UIh_ListDataObject_String::TrySetDisplayTextFromStringValue(const FString& InStringValue)
 {
 	const int32 CurrentIndex = AvailableOptionsStringArray.IndexOfByKey(InStringValue);
