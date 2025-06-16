@@ -18,11 +18,14 @@ class INTERFACEHERO_API UIh_ListDataObject_Base : public UObject
 
 public:	
 	void InitDataObject();
-	/** Empty in base class. Child class ListDataObject_Collection should override it.
-	 * The function should return all the child data a tab has
-	 */
+	/** Empty in base class. Child class ListDataObject_Collection should override it. The function should return all the child data a tab has */
 	virtual TArray<UIh_ListDataObject_Base*> GetAllChildListData() const { return TArray<UIh_ListDataObject_Base*>(); }
 	virtual bool HasAnyChildListData() const { return false; }
+	
+	/** Child class should override them to provide implementations for resetting the data */
+	virtual bool HasDefaultValue() const { return false; }
+	virtual bool CanResetBackToDefaultValue() const { return false; }
+	virtual bool TryResetBackToDefaultValue() const { return false; }
 
 protected:
 	// Empty in base class. The Child classes should override it to handle the initialization needed accordingly
