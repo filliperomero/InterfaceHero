@@ -5,6 +5,8 @@
 #include "Ih_DebugHelper.h"
 #include "Input/CommonUIInputTypes.h"
 #include "Settings/Ih_GameUserSettings.h"
+#include "Subsystems/Ih_UISubsystem.h"
+#include "Widgets/Components/Ih_CommonButtonBase.h"
 #include "Widgets/Components/Ih_CommonListView.h"
 #include "Widgets/Components/Ih_TabListWidgetBase.h"
 #include "Widgets/Options/Ih_OptionsDataRegistry.h"
@@ -80,7 +82,48 @@ UIh_OptionsDataRegistry* UIh_OptionsScreen::GetOrCreateDataRegistry()
 
 void UIh_OptionsScreen::OnResetBoundActionTrigger()
 {
-	Debug::Print(TEXT("Reset Bound Action Triggered"));
+	if (ResettableDataArray.IsEmpty()) return;
+
+	UCommonButtonBase* SelectedTabButton = TabListWidget_OptionsTabs->GetTabButtonBaseByID(TabListWidget_OptionsTabs->GetActiveTab());
+
+	const FString TabButtonName = CastChecked<UIh_CommonButtonBase>(SelectedTabButton)->GetButtonDisplayText().ToString();
+
+	UIh_UISubsystem::Get(this)->PushConfirmScreenToModalStackAsync(
+		EIh_ConfirmScreenType::YesNo,
+		FText::FromString(TEXT("Reset")),
+		FText::FromString(TEXT("Are you sure you want to reset all the settings under the ") + TabButtonName + TEXT(" tab.")),
+		[this](EIh_ConfirmScreenButtonType ClickedButtonType)
+		{
+			if (ClickedButtonType != EIh_ConfirmScreenButtonType::Confirmed) return;
+
+			// Flag to indicate we're resetting data. So when our delegate triggers OnListViewListDataModified, we can make sure we aren't modifying ResettableDataArray
+			bIsResettingData = true;
+			bool bHasDataFailedToReset = false;
+
+			for (UIh_ListDataObject_Base* DataToReset : ResettableDataArray)
+			{
+				if (!IsValid(DataToReset)) continue;
+
+				if (DataToReset->TryResetBackToDefaultValue())
+				{
+					Debug::Print(DataToReset->GetDataDisplayName().ToString() + TEXT(" was reset"));
+				}
+				else
+				{
+					bHasDataFailedToReset = true;
+					Debug::Print(DataToReset->GetDataDisplayName().ToString() + TEXT(" was not reset"));
+				}
+			}
+
+			if (!bHasDataFailedToReset)
+			{
+				ResettableDataArray.Empty();
+				RemoveActionBinding(ResetActionHandle);
+			}
+
+			bIsResettingData = false;
+		}
+	);
 }
 
 void UIh_OptionsScreen::OnBackBoundActionTrigger()
@@ -175,7 +218,7 @@ FString UIh_OptionsScreen::TryGetEntryWidgetClassName(UObject* InOwningListItem)
 
 void UIh_OptionsScreen::OnListViewListDataModified(UIh_ListDataObject_Base* ModifiedData, EIh_OptionsListDataModifyReason ModifyReason)
 {
-	if (!IsValid(ModifiedData)) return;
+	if (!IsValid(ModifiedData) || bIsResettingData) return;
 
 	if (ModifiedData->CanResetBackToDefaultValue())
 	{

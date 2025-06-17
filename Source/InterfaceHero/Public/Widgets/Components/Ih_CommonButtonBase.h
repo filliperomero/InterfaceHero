@@ -17,6 +17,9 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void SetButtonText(FText InText);
 
+	UFUNCTION()
+	FText GetButtonDisplayText() const;
+
 private:
 	virtual void NativePreConstruct() override;
 	

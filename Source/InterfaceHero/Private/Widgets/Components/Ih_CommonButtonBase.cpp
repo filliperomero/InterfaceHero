@@ -13,6 +13,16 @@ void UIh_CommonButtonBase::SetButtonText(FText InText)
 	}
 }
 
+FText UIh_CommonButtonBase::GetButtonDisplayText() const
+{
+	if (CommonTextBlock_ButtonText)
+	{
+		return CommonTextBlock_ButtonText->GetText();
+	}
+
+	return FText();
+}
+
 void UIh_CommonButtonBase::NativePreConstruct()
 {
 	Super::NativePreConstruct();

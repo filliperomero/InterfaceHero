@@ -59,4 +59,6 @@ private:
 
 	UPROPERTY(Transient)
 	TArray<UIh_ListDataObject_Base*> ResettableDataArray;
+
+	bool bIsResettingData { false };
 };
