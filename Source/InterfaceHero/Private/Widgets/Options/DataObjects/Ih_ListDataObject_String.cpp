@@ -3,6 +3,33 @@
 #include "Widgets/Options/DataObjects/Ih_ListDataObject_String.h"
 #include "Widgets/Options/Ih_OptionsDataInteractionHelper.h"
 
+void UIh_ListDataObject_String::OnDataObjectInitialized()
+{
+	if (!AvailableOptionsStringArray.IsEmpty())
+	{
+		CurrentStringValue = AvailableOptionsStringArray[0];
+	}
+
+	if (HasDefaultValue())
+	{
+		CurrentStringValue = GetDefaultValueAsString();
+	}
+
+	// Read from the saved string value and use it to set the CurrentStringValue
+	if (DataDynamicGetter)
+	{
+		if (!DataDynamicGetter->GetValueAsString().IsEmpty())
+		{
+			CurrentStringValue = DataDynamicGetter->GetValueAsString();
+		}
+	}
+
+	if (!TrySetDisplayTextFromStringValue(CurrentStringValue))
+	{
+		CurrentDisplayText = FText::FromString(TEXT("Invalid Option"));
+	}
+}
+
 void UIh_ListDataObject_String::AddDynamicOption(const FString& InStringValue, const FText& InDisplayText)
 {
 	AvailableOptionsStringArray.Add(InStringValue);
@@ -58,28 +85,6 @@ void UIh_ListDataObject_String::BackToPreviousOption()
 		DataDynamicSetter->SetValueFromString(CurrentStringValue);
 
 		NotifyListDataModified(this);
-	}
-}
-
-void UIh_ListDataObject_String::OnDataObjectInitialized()
-{
-	if (!AvailableOptionsStringArray.IsEmpty())
-	{
-		CurrentStringValue = AvailableOptionsStringArray[0];
-	}
-
-	// Read from the saved string value and use it to set the CurrentStringValue
-	if (DataDynamicGetter)
-	{
-		if (!DataDynamicGetter->GetValueAsString().IsEmpty())
-		{
-			CurrentStringValue = DataDynamicGetter->GetValueAsString();
-		}
-	}
-
-	if (!TrySetDisplayTextFromStringValue(CurrentStringValue))
-	{
-		CurrentDisplayText = FText::FromString(TEXT("Invalid Option"));
 	}
 }
 
