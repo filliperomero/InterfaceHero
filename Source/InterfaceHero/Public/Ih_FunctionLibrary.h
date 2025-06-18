@@ -19,4 +19,7 @@ class INTERFACEHERO_API UIh_FunctionLibrary : public UBlueprintFunctionLibrary
 public:
 	UFUNCTION(BlueprintPure, Category="Interface Hero Function Library")
 	static TSoftClassPtr<UIh_ActivatableBase> GetSoftWidgetClassByTag(UPARAM(meta=(Categories="Widget")) FGameplayTag InWidgetTag);
+
+	UFUNCTION(BlueprintPure, Category="Interface Hero Function Library")
+	static TSoftObjectPtr<UTexture2D> GetOptionsSoftImageByTag(UPARAM(meta=(Categories="Image")) FGameplayTag InImageTag);
 };

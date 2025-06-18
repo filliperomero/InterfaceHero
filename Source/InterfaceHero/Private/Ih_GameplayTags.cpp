@@ -16,4 +16,7 @@ namespace InterfaceHeroGameplayTags
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Widget_ConfirmScreen, "Widget.ConfirmScreen", "");
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Widget_StoryScreen, "Widget.StoryScreen", "");
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Widget_OptionsScreen, "Widget.OptionsScreen", "");
+
+	// Options Image
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Image_TestImage, "Image.TestImage", "");
 }

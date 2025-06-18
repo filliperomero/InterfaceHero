@@ -11,3 +11,12 @@ TSoftClassPtr<UIh_ActivatableBase> UIh_FunctionLibrary::GetSoftWidgetClassByTag(
 
 	return DeveloperSettings->WidgetMap.FindRef(InWidgetTag);
 }
+
+TSoftObjectPtr<UTexture2D> UIh_FunctionLibrary::GetOptionsSoftImageByTag(FGameplayTag InImageTag)
+{
+	const UIh_DeveloperSettings* DeveloperSettings = GetDefault<UIh_DeveloperSettings>();
+
+	checkf(DeveloperSettings->OptionsScreenSoftImageMap.Contains(InImageTag), TEXT("Could not find the corresponding image under the tag %s"), *InImageTag.ToString())
+
+	return DeveloperSettings->OptionsScreenSoftImageMap.FindRef(InImageTag);
+}

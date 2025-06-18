@@ -2,6 +2,8 @@
 
 #include "Widgets/Options/Ih_OptionsDataRegistry.h"
 
+#include "Ih_FunctionLibrary.h"
+#include "Ih_GameplayTags.h"
 #include "Settings/Ih_GameUserSettings.h"
 #include "Widgets/Options/Ih_OptionsDataInteractionHelper.h"
 #include "Widgets/Options/DataObjects/Ih_ListDataObject_Collection.h"
@@ -69,11 +71,13 @@ void UIh_OptionsDataRegistry::InitGameplayCollectionTab()
 
 	// Test Item
 	{
-		UIh_ListDataObject_String* TesteItem = NewObject<UIh_ListDataObject_String>();
-		TesteItem->SetDataID(FName("TesteItem"));
-		TesteItem->SetDataDisplayName(FText::FromString(TEXT("Teste Item")));
+		UIh_ListDataObject_String* TestItem = NewObject<UIh_ListDataObject_String>();
+		TestItem->SetDataID(FName("TestItem"));
+		TestItem->SetDataDisplayName(FText::FromString(TEXT("Test Image Item")));
+		TestItem->SetSoftDescriptionImage(UIh_FunctionLibrary::GetOptionsSoftImageByTag(InterfaceHeroGameplayTags::Image_TestImage));
+		TestItem->SetDescriptionRichText(FText::FromString(TEXT("The image to display can be specified in the project settings. It can be anything the developer assigned in there")));
 
-		GameplayTabCollection->AddChildListData(TesteItem);
+		GameplayTabCollection->AddChildListData(TestItem);
 	}
 
 	RegisteredOptionsTabCollections.Add(GameplayTabCollection);
