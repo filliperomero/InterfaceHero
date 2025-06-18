@@ -28,6 +28,7 @@ protected:
 	
 	virtual void NativeOnListItemObjectSet(UObject* ListItemObject) override;
 	virtual FReply NativeOnFocusReceived(const FGeometry& InGeometry, const FFocusEvent& InFocusEvent) override;
+	virtual void NativeOnEntryReleased() override;
 
 	/** The Child Class should override this function to handle the initialization needed. Super call is expected. */
 	virtual void OnOwningListDataObjectSet(UIh_ListDataObject_Base* InOwningListDataObject);

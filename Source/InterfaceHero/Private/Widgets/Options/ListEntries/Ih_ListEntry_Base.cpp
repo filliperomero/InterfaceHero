@@ -39,6 +39,14 @@ FReply UIh_ListEntry_Base::NativeOnFocusReceived(const FGeometry& InGeometry, co
 	return Super::NativeOnFocusReceived(InGeometry, InFocusEvent);
 }
 
+void UIh_ListEntry_Base::NativeOnEntryReleased()
+{
+	IUserObjectListEntry::NativeOnEntryReleased();
+
+	// Manually reset our widget highlight state back to default after it is released. This is to fix an issue when changing tabs with keyboard and all entries are highlighted
+	NativeOnListEntryWidgetHovered(false);
+}
+
 void UIh_ListEntry_Base::OnOwningListDataObjectSet(UIh_ListDataObject_Base* InOwningListDataObject)
 {
 	if (CommonText_SettingDisplayName)
