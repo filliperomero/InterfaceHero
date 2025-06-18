@@ -67,6 +67,20 @@ void UIh_OptionsScreen::NativeOnDeactivated()
 	UIh_GameUserSettings::Get()->ApplySettings(true);
 }
 
+UWidget* UIh_OptionsScreen::NativeGetDesiredFocusTarget() const
+{
+	// Logic to regain focus when we are, for example, showing a confirmation screen and go back to the options screen (gamepad-only problem where it was not getting focus back).
+	if (UObject* SelectedObject = CommonListView_OptionsList->GetSelectedItem())
+	{
+		if (UUserWidget* SelectedEntryWidget = CommonListView_OptionsList->GetEntryWidgetFromItem(SelectedObject))
+		{
+			return SelectedEntryWidget;
+		}
+	}
+	
+	return Super::NativeGetDesiredFocusTarget();
+}
+
 UIh_OptionsDataRegistry* UIh_OptionsScreen::GetOrCreateDataRegistry()
 {
 	if (!OwningDataRegistry)
