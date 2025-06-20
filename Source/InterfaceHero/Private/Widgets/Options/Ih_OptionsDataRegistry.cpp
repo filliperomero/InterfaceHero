@@ -33,7 +33,38 @@ TArray<UIh_ListDataObject_Base*> UIh_OptionsDataRegistry::GetListSourceItemsBySe
 
 	const UIh_ListDataObject_Collection* FoundTabCollection = *FoundTabCollectionPtr;
 
-	return FoundTabCollection->GetAllChildListData();
+	TArray<UIh_ListDataObject_Base*> AllChildListItems;
+	
+	for (UIh_ListDataObject_Base* ChildListItem : FoundTabCollection->GetAllChildListData())
+	{
+		if (!IsValid(ChildListItem)) continue;
+	
+		AllChildListItems.Add(ChildListItem);
+	
+		if (ChildListItem->HasAnyChildListData())
+		{
+			FindChildListDataRecursively(ChildListItem, AllChildListItems);
+		}
+	}
+
+	return AllChildListItems;
+}
+
+void UIh_OptionsDataRegistry::FindChildListDataRecursively(UIh_ListDataObject_Base* InParentData, TArray<UIh_ListDataObject_Base*>& OutChildListData) const
+{
+	if (!IsValid(InParentData) || !InParentData->HasAnyChildListData()) return;
+	
+	for (UIh_ListDataObject_Base* SubChildListItem : InParentData->GetAllChildListData())
+	{
+		if (!IsValid(SubChildListItem)) continue;
+
+		OutChildListData.Add(SubChildListItem);
+
+		if (SubChildListItem->HasAnyChildListData())
+		{
+			FindChildListDataRecursively(SubChildListItem, OutChildListData);
+		}
+	}
 }
 
 void UIh_OptionsDataRegistry::InitGameplayCollectionTab()
