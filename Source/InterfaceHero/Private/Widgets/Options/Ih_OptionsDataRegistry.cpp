@@ -7,6 +7,7 @@
 #include "Settings/Ih_GameUserSettings.h"
 #include "Widgets/Options/Ih_OptionsDataInteractionHelper.h"
 #include "Widgets/Options/DataObjects/Ih_ListDataObject_Collection.h"
+#include "Widgets/Options/DataObjects/Ih_ListDataObject_Scalar.h"
 #include "Widgets/Options/DataObjects/Ih_ListDataObject_String.h"
 
 #define MAKE_OPTIONS_DATA_CONTROL(SetterOrGetterFuncName) \
@@ -127,6 +128,24 @@ void UIh_OptionsDataRegistry::InitAudioCollectionTab()
 		VolumeCategoryCollection->SetDataDisplayName(FText::FromString(TEXT("Volume")));
 
 		AudioTabCollection->AddChildListData(VolumeCategoryCollection);
+
+		// Overall Volume
+		{
+			UIh_ListDataObject_Scalar* OverallVolume = NewObject<UIh_ListDataObject_Scalar>();
+			OverallVolume->SetDataID(FName("OverallVolume"));
+			OverallVolume->SetDataDisplayName(FText::FromString(TEXT("Overall Volume")));
+			OverallVolume->SetDescriptionRichText(FText::FromString(TEXT("Adjusts the master volume level for all game audio, including music, sound effects, and dialogue.")));
+			OverallVolume->SetDisplayValueRange(TRange<float>(0.f, 1.f));
+			OverallVolume->SetOutputValueRange(TRange<float>(0.f, 2.f));
+			OverallVolume->SetSliderStepSize(0.01f);
+			OverallVolume->SetDefaultValueFromString(LexToString(1.f));
+			OverallVolume->SetDisplayNumericType(ECommonNumericType::Percentage);
+			OverallVolume->SetNumberFormattingOptions(UIh_ListDataObject_Scalar::NoDecimal());
+
+			VolumeCategoryCollection->AddChildListData(OverallVolume);
+
+			// TODO: Set data dynamic Getter/Setter for the data object
+		}
 	}
 
 	RegisteredOptionsTabCollections.Add(AudioTabCollection);

@@ -13,6 +13,10 @@ class INTERFACEHERO_API UIh_ListDataObject_Scalar : public UIh_ListDataObject_Va
 {
 	GENERATED_BODY()
 
+public:
+	static FCommonNumberFormattingOptions NoDecimal();
+	static FCommonNumberFormattingOptions WithDecimal(int32 NumFracDigit);
+
 private:
 	TRange<float> DisplayValueRange { TRange<float>(0.f, 1.f) };
 	TRange<float> OutputValueRange { TRange<float>(0.f, 1.f) };
