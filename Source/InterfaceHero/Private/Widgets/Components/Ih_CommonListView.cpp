@@ -4,6 +4,7 @@
 #include "Editor/WidgetCompilerLog.h"
 #include "Widgets/Options/Ih_DataAsset_DataListEntryMapping.h"
 #include "Widgets/Options/DataObjects/Ih_ListDataObject_Base.h"
+#include "Widgets/Options/DataObjects/Ih_ListDataObject_Collection.h"
 #include "Widgets/Options/ListEntries/Ih_ListEntry_Base.h"
 
 UUserWidget& UIh_CommonListView::OnGenerateEntryWidgetInternal(UObject* Item, TSubclassOf<UUserWidget> DesiredEntryClass, const TSharedRef<STableViewBase>& OwnerTable)
@@ -16,6 +17,11 @@ UUserWidget& UIh_CommonListView::OnGenerateEntryWidgetInternal(UObject* Item, TS
 	}
 
 	return Super::OnGenerateEntryWidgetInternal(Item, DesiredEntryClass, OwnerTable);
+}
+
+bool UIh_CommonListView::OnIsSelectableOrNavigableInternal(UObject* FirstSelectedItem)
+{
+	return !FirstSelectedItem->IsA<UIh_ListDataObject_Collection>();
 }
 
 #if WITH_EDITOR

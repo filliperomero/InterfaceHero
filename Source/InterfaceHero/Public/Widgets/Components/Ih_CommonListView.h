@@ -15,6 +15,7 @@ class INTERFACEHERO_API UIh_CommonListView : public UCommonListView
 
 protected:
 	virtual UUserWidget& OnGenerateEntryWidgetInternal(UObject* Item, TSubclassOf<UUserWidget> DesiredEntryClass, const TSharedRef<STableViewBase>& OwnerTable) override;
+	virtual bool OnIsSelectableOrNavigableInternal(UObject* FirstSelectedItem) override;
 
 private:
 #if WITH_EDITOR
