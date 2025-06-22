@@ -142,6 +142,11 @@ void UIh_OptionsDataRegistry::InitAudioCollectionTab()
 			OverallVolume->SetDisplayNumericType(ECommonNumericType::Percentage);
 			OverallVolume->SetNumberFormattingOptions(UIh_ListDataObject_Scalar::NoDecimal());
 
+			OverallVolume->SetDataDynamicGetter(MAKE_OPTIONS_DATA_CONTROL(GetOverallVolume));
+			OverallVolume->SetDataDynamicSetter(MAKE_OPTIONS_DATA_CONTROL(SetOverallVolume));
+
+			OverallVolume->SetShouldApplyChangeImmediately(true);
+
 			VolumeCategoryCollection->AddChildListData(OverallVolume);
 
 			// TODO: Set data dynamic Getter/Setter for the data object
