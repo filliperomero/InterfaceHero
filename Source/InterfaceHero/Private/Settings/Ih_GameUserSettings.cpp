@@ -4,7 +4,7 @@
 
 // Values cannot be initialized in the header file when it's a Config property
 UIh_GameUserSettings::UIh_GameUserSettings()
-	: OverallVolume(1.f)
+	: OverallVolume(1.f), MusicVolume(1.f)
 {
 }
 
@@ -23,4 +23,9 @@ void UIh_GameUserSettings::SetOverallVolume(float InOverallVolume)
 	OverallVolume = InOverallVolume;
 
 	// The actual logic for controlling the volume goes here
+}
+
+void UIh_GameUserSettings::SetMusicVolume(float InMusicVolume)
+{
+	MusicVolume = InMusicVolume;
 }
