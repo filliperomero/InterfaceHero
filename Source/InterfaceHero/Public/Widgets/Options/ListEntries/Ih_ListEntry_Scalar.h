@@ -21,6 +21,9 @@ protected:
 	virtual void OnOwningListDataObjectModified(UIh_ListDataObject_Base* OwningModifiedData, EIh_OptionsListDataModifyReason ModifyReason) override;
 
 private:
+	UFUNCTION()
+	void OnSliderValueChanged(float Value);
+	
 	/** Bound Widgets */
 	UPROPERTY(BlueprintReadOnly, meta=(BindWidget, AllowPrivateAccess="true"))
 	TObjectPtr<UCommonNumericTextBlock> CommonNumeric_SettingValue;

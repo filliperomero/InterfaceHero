@@ -7,6 +7,8 @@
 void UIh_ListEntry_Scalar::NativeOnInitialized()
 {
 	Super::NativeOnInitialized();
+
+	AnalogSlider_SettingSlider->OnValueChanged.AddUniqueDynamic(this, &ThisClass::OnSliderValueChanged);
 }
 
 void UIh_ListEntry_Scalar::OnOwningListDataObjectSet(UIh_ListDataObject_Base* InOwningListDataObject)
@@ -32,4 +34,11 @@ void UIh_ListEntry_Scalar::OnOwningListDataObjectModified(UIh_ListDataObject_Bas
 		CommonNumeric_SettingValue->SetCurrentValue(CachedOwningScalarDataObject->GetCurrentValue());
 		AnalogSlider_SettingSlider->SetValue(CachedOwningScalarDataObject->GetCurrentValue());
 	}
+}
+
+void UIh_ListEntry_Scalar::OnSliderValueChanged(float Value)
+{
+	if (!IsValid(CachedOwningScalarDataObject)) return;
+
+	CachedOwningScalarDataObject->SetCurrentValueFromSlider(Value);
 }
