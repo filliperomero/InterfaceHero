@@ -148,8 +148,17 @@ void UIh_OptionsDataRegistry::InitAudioCollectionTab()
 			OverallVolume->SetShouldApplyChangeImmediately(true);
 
 			VolumeCategoryCollection->AddChildListData(OverallVolume);
+		}
 
-			// TODO: Set data dynamic Getter/Setter for the data object
+		// Test Item
+		{
+			UIh_ListDataObject_String* TestItem = NewObject<UIh_ListDataObject_String>();
+			TestItem->SetDataID(FName("TestItem_Volume"));
+			TestItem->SetDataDisplayName(FText::FromString(TEXT("Test Image Item")));
+			TestItem->SetSoftDescriptionImage(UIh_FunctionLibrary::GetOptionsSoftImageByTag(InterfaceHeroGameplayTags::Image_TestImage));
+			TestItem->SetDescriptionRichText(FText::FromString(TEXT("The image to display can be specified in the project settings. It can be anything the developer assigned in there")));
+
+			VolumeCategoryCollection->AddChildListData(TestItem);
 		}
 	}
 

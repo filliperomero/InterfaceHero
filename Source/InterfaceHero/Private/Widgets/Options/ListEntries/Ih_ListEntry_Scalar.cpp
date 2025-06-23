@@ -9,6 +9,7 @@ void UIh_ListEntry_Scalar::NativeOnInitialized()
 	Super::NativeOnInitialized();
 
 	AnalogSlider_SettingSlider->OnValueChanged.AddUniqueDynamic(this, &ThisClass::OnSliderValueChanged);
+	AnalogSlider_SettingSlider->OnMouseCaptureBegin.AddUniqueDynamic(this, &ThisClass::OnMouseCaptureBegin);
 }
 
 void UIh_ListEntry_Scalar::OnOwningListDataObjectSet(UIh_ListDataObject_Base* InOwningListDataObject)
@@ -41,4 +42,9 @@ void UIh_ListEntry_Scalar::OnSliderValueChanged(float Value)
 	if (!IsValid(CachedOwningScalarDataObject)) return;
 
 	CachedOwningScalarDataObject->SetCurrentValueFromSlider(Value);
+}
+
+void UIh_ListEntry_Scalar::OnMouseCaptureBegin()
+{
+	SelectThisEntryWidget();
 }

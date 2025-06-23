@@ -23,6 +23,9 @@ protected:
 private:
 	UFUNCTION()
 	void OnSliderValueChanged(float Value);
+
+	UFUNCTION()
+	void OnMouseCaptureBegin();
 	
 	/** Bound Widgets */
 	UPROPERTY(BlueprintReadOnly, meta=(BindWidget, AllowPrivateAccess="true"))
