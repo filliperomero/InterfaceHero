@@ -170,6 +170,27 @@ void UIh_OptionsDataRegistry::InitAudioCollectionTab()
 
 			VolumeCategoryCollection->AddChildListData(MusicVolume);
 		}
+
+		// Sound FX Volume
+		{
+			UIh_ListDataObject_Scalar* SoundFXVolume = NewObject<UIh_ListDataObject_Scalar>();
+			SoundFXVolume->SetDataID(FName("SoundFXVolume"));
+			SoundFXVolume->SetDataDisplayName(FText::FromString(TEXT("Sound FX Volume")));
+			SoundFXVolume->SetDescriptionRichText(FText::FromString(TEXT("Adjusts the volume level of sound effects, such as footsteps, attacks, item pickups, and environment sounds.")));
+			SoundFXVolume->SetDisplayValueRange(TRange<float>(0.f, 1.f));
+			SoundFXVolume->SetOutputValueRange(TRange<float>(0.f, 2.f));
+			SoundFXVolume->SetSliderStepSize(0.01f);
+			SoundFXVolume->SetDefaultValueFromString(LexToString(1.f));
+			SoundFXVolume->SetDisplayNumericType(ECommonNumericType::Percentage);
+			SoundFXVolume->SetNumberFormattingOptions(UIh_ListDataObject_Scalar::NoDecimal());
+
+			SoundFXVolume->SetDataDynamicGetter(MAKE_OPTIONS_DATA_CONTROL(GetSoundFXVolume));
+			SoundFXVolume->SetDataDynamicSetter(MAKE_OPTIONS_DATA_CONTROL(SetSoundFXVolume));
+
+			SoundFXVolume->SetShouldApplyChangeImmediately(true);
+
+			VolumeCategoryCollection->AddChildListData(SoundFXVolume);
+		}
 	}
 
 	RegisteredOptionsTabCollections.Add(AudioTabCollection);

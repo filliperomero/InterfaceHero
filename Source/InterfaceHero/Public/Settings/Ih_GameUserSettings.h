@@ -36,6 +36,12 @@ public:
 	UFUNCTION()
 	void SetMusicVolume(float InMusicVolume);
 
+	UFUNCTION()
+	float GetSoundFXVolume() const { return SoundFXVolume; }
+
+	UFUNCTION()
+	void SetSoundFXVolume(float InSoundFXVolume);
+
 private:
 	/** Gameplay Collection Tab */
 	UPROPERTY(Config)
@@ -47,4 +53,7 @@ private:
 
 	UPROPERTY(Config)
 	float MusicVolume;
+
+	UPROPERTY(Config)
+	float SoundFXVolume;
 };
