@@ -19,6 +19,9 @@ public:
 
 	float GetCurrentValue() const;
 	void SetCurrentValueFromSlider(float InNewValue);
+	
+	virtual bool CanResetBackToDefaultValue() const override;
+	virtual bool TryResetBackToDefaultValue() override;
 
 private:
 	float StringToFloat(const FString& InString) const;
