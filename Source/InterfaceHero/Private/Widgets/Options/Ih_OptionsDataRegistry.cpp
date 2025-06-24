@@ -9,6 +9,7 @@
 #include "Widgets/Options/DataObjects/Ih_ListDataObject_Collection.h"
 #include "Widgets/Options/DataObjects/Ih_ListDataObject_Scalar.h"
 #include "Widgets/Options/DataObjects/Ih_ListDataObject_String.h"
+#include "Widgets/Options/DataObjects/Ih_ListDataObject_StringBool.h"
 
 #define MAKE_OPTIONS_DATA_CONTROL(SetterOrGetterFuncName) \
 	MakeShared<FIh_OptionsDataInteractionHelper>(GET_FUNCTION_NAME_STRING_CHECKED(UIh_GameUserSettings,SetterOrGetterFuncName))
@@ -190,6 +191,33 @@ void UIh_OptionsDataRegistry::InitAudioCollectionTab()
 			SoundFXVolume->SetShouldApplyChangeImmediately(true);
 
 			VolumeCategoryCollection->AddChildListData(SoundFXVolume);
+		}
+	}
+
+	// Sound Category
+	{
+		UIh_ListDataObject_Collection* SoundCategoryCollection = NewObject<UIh_ListDataObject_Collection>();
+		SoundCategoryCollection->SetDataID(FName("SoundCategoryCollection"));
+		SoundCategoryCollection->SetDataDisplayName(FText::FromString(TEXT("Sound")));
+
+		AudioTabCollection->AddChildListData(SoundCategoryCollection);
+
+		// Allow Background Audio
+		{
+			UIh_ListDataObject_StringBool* AllowBackgroundAudio = NewObject<UIh_ListDataObject_StringBool>();
+			AllowBackgroundAudio->SetDataID(FName("AllowBackgroundAudio"));
+			AllowBackgroundAudio->SetDataDisplayName(FText::FromString(TEXT("Allow Background Audio")));
+			AllowBackgroundAudio->OverrideTrueDisplayText(FText::FromString(TEXT("Enabled")));
+			AllowBackgroundAudio->OverrideFalseDisplayText(FText::FromString(TEXT("Disabled")));
+			AllowBackgroundAudio->SetDescriptionRichText(FText::FromString(TEXT("Allow Background Audio.")));
+			AllowBackgroundAudio->SetFalseAsDefaultValue();
+
+			AllowBackgroundAudio->SetDataDynamicGetter(MAKE_OPTIONS_DATA_CONTROL(GetAllowBackgroundAudio));
+			AllowBackgroundAudio->SetDataDynamicSetter(MAKE_OPTIONS_DATA_CONTROL(SetAllowBackgroundAudio));
+
+			AllowBackgroundAudio->SetShouldApplyChangeImmediately(true);
+
+			SoundCategoryCollection->AddChildListData(AllowBackgroundAudio);
 		}
 	}
 

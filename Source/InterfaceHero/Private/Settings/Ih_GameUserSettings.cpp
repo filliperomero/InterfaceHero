@@ -4,7 +4,7 @@
 
 // Values cannot be initialized in the header file when it's a Config property
 UIh_GameUserSettings::UIh_GameUserSettings()
-	: OverallVolume(1.f), MusicVolume(1.f), SoundFXVolume(1.f)
+	: OverallVolume(1.f), MusicVolume(1.f), SoundFXVolume(1.f), bAllowBackgroundAudio(false)
 {
 }
 
@@ -33,4 +33,9 @@ void UIh_GameUserSettings::SetMusicVolume(float InMusicVolume)
 void UIh_GameUserSettings::SetSoundFXVolume(float InSoundFXVolume)
 {
 	SoundFXVolume = InSoundFXVolume;
+}
+
+void UIh_GameUserSettings::SetAllowBackgroundAudio(bool bIsAllowed)
+{
+	bAllowBackgroundAudio = bIsAllowed;
 }
