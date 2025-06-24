@@ -48,6 +48,12 @@ public:
 	UFUNCTION()
 	void SetAllowBackgroundAudio(bool bIsAllowed);
 
+	UFUNCTION()
+	bool GetUseHDRAudioMode() const { return bUseHDRAudioMode; }
+
+	UFUNCTION()
+	void SetUseHDRAudioMode(bool bUseHDR);
+
 private:
 	/** Gameplay Collection Tab */
 	UPROPERTY(Config)
@@ -65,4 +71,7 @@ private:
 
 	UPROPERTY(Config)
 	bool bAllowBackgroundAudio;
+	
+	UPROPERTY(Config)
+	bool bUseHDRAudioMode;
 };

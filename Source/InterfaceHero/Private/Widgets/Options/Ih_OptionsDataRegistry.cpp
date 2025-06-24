@@ -219,6 +219,22 @@ void UIh_OptionsDataRegistry::InitAudioCollectionTab()
 
 			SoundCategoryCollection->AddChildListData(AllowBackgroundAudio);
 		}
+
+		// Use HDR Audio
+		{
+			UIh_ListDataObject_StringBool* UseHDRAudioMode = NewObject<UIh_ListDataObject_StringBool>();
+			UseHDRAudioMode->SetDataID(FName("useHDRAudioMode"));
+			UseHDRAudioMode->SetDataDisplayName(FText::FromString(TEXT("Use HDR Audio Mode")));
+			UseHDRAudioMode->OverrideTrueDisplayText(FText::FromString(TEXT("Enabled")));
+			UseHDRAudioMode->OverrideFalseDisplayText(FText::FromString(TEXT("Disabled")));
+			UseHDRAudioMode->SetDescriptionRichText(FText::FromString(TEXT("Use HDR Mode")));
+			UseHDRAudioMode->SetFalseAsDefaultValue();
+			UseHDRAudioMode->SetDataDynamicGetter(MAKE_OPTIONS_DATA_CONTROL(GetUseHDRAudioMode));
+			UseHDRAudioMode->SetDataDynamicSetter(MAKE_OPTIONS_DATA_CONTROL(SetUseHDRAudioMode));
+			UseHDRAudioMode->SetShouldApplyChangeImmediately(true);
+
+			SoundCategoryCollection->AddChildListData(UseHDRAudioMode);
+		}
 	}
 
 	RegisteredOptionsTabCollections.Add(AudioTabCollection);
