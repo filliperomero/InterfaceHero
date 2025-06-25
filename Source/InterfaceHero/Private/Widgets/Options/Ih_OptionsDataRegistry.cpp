@@ -10,6 +10,7 @@
 #include "Widgets/Options/DataObjects/Ih_ListDataObject_Scalar.h"
 #include "Widgets/Options/DataObjects/Ih_ListDataObject_String.h"
 #include "Widgets/Options/DataObjects/Ih_ListDataObject_StringBool.h"
+#include "Widgets/Options/DataObjects/Ih_ListDataObject_StringEnum.h"
 
 #define MAKE_OPTIONS_DATA_CONTROL(SetterOrGetterFuncName) \
 	MakeShared<FIh_OptionsDataInteractionHelper>(GET_FUNCTION_NAME_STRING_CHECKED(UIh_GameUserSettings,SetterOrGetterFuncName))
@@ -245,6 +246,34 @@ void UIh_OptionsDataRegistry::InitVideoCollectionTab()
 	UIh_ListDataObject_Collection* VideoTabCollection = NewObject<UIh_ListDataObject_Collection>();
 	VideoTabCollection->SetDataID(FName("VideoTabCollection"));
 	VideoTabCollection->SetDataDisplayName(FText::FromString(TEXT("Video")));
+
+	// Display Category
+	{
+		UIh_ListDataObject_Collection* DisplayCategoryCollection = NewObject<UIh_ListDataObject_Collection>();
+		DisplayCategoryCollection->SetDataID(FName("DisplayCategoryCollection"));
+		DisplayCategoryCollection->SetDataDisplayName(FText::FromString(TEXT("Display")));
+
+		VideoTabCollection->AddChildListData(DisplayCategoryCollection);
+
+		// Window Mode
+		{
+			UIh_ListDataObject_StringEnum* WindowMode = NewObject<UIh_ListDataObject_StringEnum>();
+			WindowMode->SetDataID(FName("WindowMode"));
+			WindowMode->SetDataDisplayName(FText::FromString(TEXT("Window Mode")));
+			WindowMode->SetDescriptionRichText(FText::FromString(TEXT("Sets how the game window is displayed: Fullscreen, Windowed, or Borderless Windowed. Affects performance and how the game interacts with other applications.")));
+			WindowMode->AddEnumOption(EWindowMode::Fullscreen, FText::FromString(TEXT("Fullscreen")));
+			WindowMode->AddEnumOption(EWindowMode::Windowed, FText::FromString(TEXT("Windowed")));
+			WindowMode->AddEnumOption(EWindowMode::WindowedFullscreen, FText::FromString(TEXT("Borderless Windowed")));
+			WindowMode->SetDefaultValueFromEnumOption(EWindowMode::WindowedFullscreen);
+			
+			WindowMode->SetDataDynamicGetter(MAKE_OPTIONS_DATA_CONTROL(GetFullscreenMode));
+			WindowMode->SetDataDynamicSetter(MAKE_OPTIONS_DATA_CONTROL(SetFullscreenMode));
+
+			WindowMode->SetShouldApplyChangeImmediately(true);
+
+			DisplayCategoryCollection->AddChildListData(WindowMode);
+		}
+	}
 
 	RegisteredOptionsTabCollections.Add(VideoTabCollection);
 }
