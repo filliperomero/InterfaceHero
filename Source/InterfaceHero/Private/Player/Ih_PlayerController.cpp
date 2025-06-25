@@ -3,6 +3,7 @@
 #include "InterfaceHero/Public/Player/Ih_PlayerController.h"
 #include "Camera/CameraActor.h"
 #include "Kismet/GameplayStatics.h"
+#include "Settings/Ih_GameUserSettings.h"
 
 void AIh_PlayerController::OnPossess(APawn* InPawn)
 {
@@ -14,5 +15,13 @@ void AIh_PlayerController::OnPossess(APawn* InPawn)
 	if (!OutCameras.IsEmpty())
 	{
 		SetViewTarget(OutCameras[0]);
+	}
+
+	UIh_GameUserSettings* GameUserSettings = UIh_GameUserSettings::Get();
+
+	if (GameUserSettings->GetLastCPUBenchmarkResult() == -1.f || GameUserSettings->GetLastGPUBenchmarkResult() == -1.f)
+	{
+		GameUserSettings->RunHardwareBenchmark();
+		GameUserSettings->ApplyHardwareBenchmarkResults();
 	}
 }
