@@ -11,6 +11,7 @@
 #include "Widgets/Options/DataObjects/Ih_ListDataObject_String.h"
 #include "Widgets/Options/DataObjects/Ih_ListDataObject_StringBool.h"
 #include "Widgets/Options/DataObjects/Ih_ListDataObject_StringEnum.h"
+#include "Widgets/Options/DataObjects/Ih_ListDataObject_StringResolution.h"
 
 #define MAKE_OPTIONS_DATA_CONTROL(SetterOrGetterFuncName) \
 	MakeShared<FIh_OptionsDataInteractionHelper>(GET_FUNCTION_NAME_STRING_CHECKED(UIh_GameUserSettings,SetterOrGetterFuncName))
@@ -272,6 +273,22 @@ void UIh_OptionsDataRegistry::InitVideoCollectionTab()
 			WindowMode->SetShouldApplyChangeImmediately(true);
 
 			DisplayCategoryCollection->AddChildListData(WindowMode);
+		}
+
+		// Screen Resolution
+		{
+			UIh_ListDataObject_StringResolution* ScreenResolution = NewObject<UIh_ListDataObject_StringResolution>();
+			ScreenResolution->SetDataID(FName("ScreenResolution"));
+			ScreenResolution->SetDataDisplayName(FText::FromString(TEXT("Screen Resolution")));
+			ScreenResolution->SetDescriptionRichText(FText::FromString(TEXT("Sets the game's display resolution. Higher resolutions offer sharper visuals but may reduce performance on lower-end systems.")));
+			ScreenResolution->InitResolutionValues();
+
+			ScreenResolution->SetDataDynamicGetter(MAKE_OPTIONS_DATA_CONTROL(GetScreenResolution));
+			ScreenResolution->SetDataDynamicSetter(MAKE_OPTIONS_DATA_CONTROL(SetScreenResolution));
+
+			ScreenResolution->SetShouldApplyChangeImmediately(true);
+
+			DisplayCategoryCollection->AddChildListData(ScreenResolution);
 		}
 	}
 
