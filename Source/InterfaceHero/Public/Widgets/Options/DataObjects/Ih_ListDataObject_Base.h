@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Types/Ih_EnumTypes.h"
+#include "Types/Ih_StructTypes.h"
 #include "UObject/Object.h"
 #include "Ih_ListDataObject_Base.generated.h"
 
@@ -27,11 +28,22 @@ public:
 	virtual bool CanResetBackToDefaultValue() const { return false; }
 	virtual bool TryResetBackToDefaultValue() { return false; }
 
+	/** Gets Called from OptionsDataRegistry for adding in edit conditions for the constructed list data objects */
+	void AddEditCondition(const FOptionsDataEditConditionDescriptor& InEditCondition);
+	
+	bool IsDataCurrentlyEditable();
+
 protected:
 	// Empty in base class. The Child classes should override it to handle the initialization needed accordingly
 	virtual void OnDataObjectInitialized();
 
 	virtual void NotifyListDataModified(UIh_ListDataObject_Base* ModifiedData, EIh_OptionsListDataModifyReason ModifyReason = EIh_OptionsListDataModifyReason::DirectlyModified);
+
+	/** Child class should override this to allow the value to be set to the forced string value */
+	virtual bool CanSetToForcedStringValue(const FString& InForcedValue) const { return false; }
+
+	/** Child class should override this to specify how to set the current value to the forced value */
+	virtual void OnSetToForcedStringValue(const FString& InForcedValue) {}
 
 private:
 	FName DataID;
@@ -45,6 +57,9 @@ private:
 
 	bool bShouldApplyChangeImmediately { false };
 
+	UPROPERTY(Transient)
+	TArray<FOptionsDataEditConditionDescriptor> EditConditionDescArray;
+	
 public:
 	DECLARE_MULTICAST_DELEGATE_TwoParams(FOnListDataModifiedDelegate, UIh_ListDataObject_Base*/*ModifiedData*/, EIh_OptionsListDataModifyReason/*ModifyReason*/);
 	FOnListDataModifiedDelegate OnListDataModified;
