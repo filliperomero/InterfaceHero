@@ -38,7 +38,7 @@ void UIh_OptionsDetailsView::UpdateDetailsViewInfo(UIh_ListDataObject_Base* InDa
 	);
 	
 	CommonRichText_DynamicDetails->SetText(FText::FromString(DynamicDetails));
-	CommonRichText_DisabledReason->SetText(InDataObject->GetDisabledRichText());
+	CommonRichText_DisabledReason->SetText(InDataObject->IsDataCurrentlyEditable() ? FText::GetEmpty() : InDataObject->GetDisabledRichText());
 }
 
 void UIh_OptionsDetailsView::ClearDetailsViewInfo()

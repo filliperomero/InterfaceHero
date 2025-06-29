@@ -19,6 +19,7 @@ protected:
 	virtual void NativeOnInitialized() override;
 	virtual void OnOwningListDataObjectSet(UIh_ListDataObject_Base* InOwningListDataObject) override;
 	virtual void OnOwningListDataObjectModified(UIh_ListDataObject_Base* OwningModifiedData, EIh_OptionsListDataModifyReason ModifyReason) override;
+	virtual void OnToggleEditableState(bool bIsEditable) override;
 
 private:
 	void OnPreviousOptionButtonClicked();

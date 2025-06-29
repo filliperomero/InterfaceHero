@@ -36,6 +36,9 @@ protected:
 	/** The Child Class should override this function to update the UI values after the data object has been modified. Super call is not needed. */
 	virtual void OnOwningListDataObjectModified(UIh_ListDataObject_Base* OwningModifiedData, EIh_OptionsListDataModifyReason ModifyReason);
 
+	/** Child class should override this function to change the editable state of the widgets it owns. Super call is expected. */
+	virtual void OnToggleEditableState(bool bIsEditable); 
+
 	void SelectThisEntryWidget();
 
 private:

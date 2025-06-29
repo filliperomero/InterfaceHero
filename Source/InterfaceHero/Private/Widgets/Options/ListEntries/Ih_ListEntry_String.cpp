@@ -35,6 +35,15 @@ void UIh_ListEntry_String::OnOwningListDataObjectModified(UIh_ListDataObject_Bas
 	CommonRotator_AvailableOptions->SetSelectedOptionByText(CachedOwningStringDataObject->GetCurrentDisplayText());
 }
 
+void UIh_ListEntry_String::OnToggleEditableState(bool bIsEditable)
+{
+	Super::OnToggleEditableState(bIsEditable);
+
+	CommonButton_PreviousOption->SetIsEnabled(bIsEditable);
+	CommonButton_NextOption->SetIsEnabled(bIsEditable);
+	CommonRotator_AvailableOptions->SetIsEnabled(bIsEditable);
+}
+
 void UIh_ListEntry_String::OnPreviousOptionButtonClicked()
 {
 	if (IsValid(CachedOwningStringDataObject))
