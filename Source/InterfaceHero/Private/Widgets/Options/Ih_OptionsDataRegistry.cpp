@@ -318,6 +318,7 @@ void UIh_OptionsDataRegistry::InitVideoCollectionTab()
 			);
 
 			ScreenResolution->AddEditCondition(WindowModeEditCondition);
+			ScreenResolution->AddEditDependencyData(CreatedWindowMode);
 
 			DisplayCategoryCollection->AddChildListData(ScreenResolution);
 		}

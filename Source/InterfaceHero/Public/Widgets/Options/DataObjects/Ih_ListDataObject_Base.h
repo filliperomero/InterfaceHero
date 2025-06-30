@@ -30,6 +30,9 @@ public:
 
 	/** Gets Called from OptionsDataRegistry for adding in edit conditions for the constructed list data objects */
 	void AddEditCondition(const FOptionsDataEditConditionDescriptor& InEditCondition);
+
+	/** Gets called from OptionsDataRegistry to add in dependency data */
+	void AddEditDependencyData(UIh_ListDataObject_Base* InDependencyData);
 	
 	bool IsDataCurrentlyEditable();
 
@@ -44,6 +47,8 @@ protected:
 
 	/** Child class should override this to specify how to set the current value to the forced value */
 	virtual void OnSetToForcedStringValue(const FString& InForcedValue) {}
+
+	virtual void OnEditDependencyDataModified(UIh_ListDataObject_Base* ModifiedDependencyData, EIh_OptionsListDataModifyReason ModifyReason = EIh_OptionsListDataModifyReason::DirectlyModified);
 
 private:
 	FName DataID;
@@ -63,6 +68,7 @@ private:
 public:
 	DECLARE_MULTICAST_DELEGATE_TwoParams(FOnListDataModifiedDelegate, UIh_ListDataObject_Base*/*ModifiedData*/, EIh_OptionsListDataModifyReason/*ModifyReason*/);
 	FOnListDataModifiedDelegate OnListDataModified;
+	FOnListDataModifiedDelegate OnDependencyDataModified;
 
 	void SetShouldApplyChangeImmediately(bool bShouldApply) { bShouldApplyChangeImmediately = bShouldApply; }
 	
