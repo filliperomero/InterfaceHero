@@ -36,6 +36,9 @@ protected:
 	/** The Child Class should override this function to update the UI values after the data object has been modified. Super call is not needed. */
 	virtual void OnOwningListDataObjectModified(UIh_ListDataObject_Base* OwningModifiedData, EIh_OptionsListDataModifyReason ModifyReason);
 
+	/** The Child Class should override this function to update the UI values after the dependency data object has been modified. Super call is not needed. */
+	virtual void OnOwningDependencyListDataObjectModified(UIh_ListDataObject_Base* OwningModifiedDependencyData, EIh_OptionsListDataModifyReason ModifyReason);
+
 	/** Child class should override this function to change the editable state of the widgets it owns. Super call is expected. */
 	virtual void OnToggleEditableState(bool bIsEditable); 
 
@@ -46,4 +49,7 @@ private:
 	UPROPERTY(BlueprintReadOnly, meta=(BindWidgetOptional, AllowPrivateAccess="true"))
 	TObjectPtr<UCommonTextBlock> CommonText_SettingDisplayName; 
 	/** Bound Widgets */
+
+	UPROPERTY(Transient)
+	TObjectPtr<UIh_ListDataObject_Base> CachedOwningDataObject;
 };
