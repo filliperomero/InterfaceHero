@@ -54,6 +54,13 @@ public:
 	UFUNCTION()
 	void SetUseHDRAudioMode(bool bUseHDR);
 
+	/** Video Collection Tab */
+	UFUNCTION()
+	float GetCurrentDisplayGamma();
+
+	UFUNCTION()
+	void SetCurrentDisplayGamma(float InNewGamma);
+
 private:
 	/** Gameplay Collection Tab */
 	UPROPERTY(Config)

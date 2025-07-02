@@ -44,3 +44,21 @@ void UIh_GameUserSettings::SetUseHDRAudioMode(bool bUseHDR)
 {
 	bUseHDRAudioMode = bUseHDR;
 }
+
+float UIh_GameUserSettings::GetCurrentDisplayGamma()
+{
+	if (GEngine)
+	{
+		return GEngine->GetDisplayGamma();
+	}
+
+	return 0.f;
+}
+
+void UIh_GameUserSettings::SetCurrentDisplayGamma(float InNewGamma)
+{
+	if (GEngine)
+	{
+		GEngine->DisplayGamma = InNewGamma;
+	}
+}
