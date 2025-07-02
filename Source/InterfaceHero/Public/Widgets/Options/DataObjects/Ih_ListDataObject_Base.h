@@ -48,6 +48,7 @@ protected:
 	/** Child class should override this to specify how to set the current value to the forced value */
 	virtual void OnSetToForcedStringValue(const FString& InForcedValue) {}
 
+	/** This function will be called when the value of the dependency data has changed. The child class can override this function to handle the custom logic needed. Super call is expected. */
 	virtual void OnEditDependencyDataModified(UIh_ListDataObject_Base* ModifiedDependencyData, EIh_OptionsListDataModifyReason ModifyReason = EIh_OptionsListDataModifyReason::DirectlyModified);
 
 private:
