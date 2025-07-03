@@ -461,6 +461,116 @@ void UIh_OptionsDataRegistry::InitVideoCollectionTab()
 			
 			GraphicsCategoryCollection->AddChildListData(AntiAliasingQuality);
 		}
+
+		// View Distance Quality
+		{
+			UIh_ListDataObject_StringInteger* ViewDistanceQuality = NewObject<UIh_ListDataObject_StringInteger>();
+			ViewDistanceQuality->SetDataID(FName("ViewDistanceQuality"));
+			ViewDistanceQuality->SetDataDisplayName(FText::FromString(TEXT("View Distance")));
+			ViewDistanceQuality->SetDescriptionRichText(FText::FromString(TEXT("Controls how far into the distance objects are rendered with full detail. Higher settings increase visual clarity at long range but may impact performance.")));
+			ViewDistanceQuality->AddIntegerOption(0, FText::FromString(TEXT("Near")));
+			ViewDistanceQuality->AddIntegerOption(1, FText::FromString(TEXT("Medium")));
+			ViewDistanceQuality->AddIntegerOption(2, FText::FromString(TEXT("Far")));
+			ViewDistanceQuality->AddIntegerOption(3, FText::FromString(TEXT("Very Far")));
+			ViewDistanceQuality->AddIntegerOption(4, FText::FromString(TEXT("Cinematic")));
+			ViewDistanceQuality->SetShouldApplyChangeImmediately(true);
+
+			ViewDistanceQuality->SetDataDynamicGetter(MAKE_OPTIONS_DATA_CONTROL(GetViewDistanceQuality));
+			ViewDistanceQuality->SetDataDynamicSetter(MAKE_OPTIONS_DATA_CONTROL(SetViewDistanceQuality));
+
+			ViewDistanceQuality->AddEditDependencyData(CreatedOverallQuality);
+			CreatedOverallQuality->AddEditDependencyData(ViewDistanceQuality);
+			
+			GraphicsCategoryCollection->AddChildListData(ViewDistanceQuality);
+		}
+
+		// Texture Quality
+		{
+			UIh_ListDataObject_StringInteger* TextureQuality = NewObject<UIh_ListDataObject_StringInteger>();
+			TextureQuality->SetDataID(FName("TextureQuality"));
+			TextureQuality->SetDataDisplayName(FText::FromString(TEXT("Texture Quality")));
+			TextureQuality->SetDescriptionRichText(FText::FromString(TEXT("Controls the resolution of textures used in the game. Higher settings provide sharper, more detailed surfaces but require more video memory and may affect performance on lower-end systems.")));
+			TextureQuality->AddIntegerOption(0, FText::FromString(TEXT("Low")));
+			TextureQuality->AddIntegerOption(1, FText::FromString(TEXT("Medium")));
+			TextureQuality->AddIntegerOption(2, FText::FromString(TEXT("High")));
+			TextureQuality->AddIntegerOption(3, FText::FromString(TEXT("Epic")));
+			TextureQuality->AddIntegerOption(4, FText::FromString(TEXT("Cinematic")));
+			TextureQuality->SetShouldApplyChangeImmediately(true);
+
+			TextureQuality->SetDataDynamicGetter(MAKE_OPTIONS_DATA_CONTROL(GetTextureQuality));
+			TextureQuality->SetDataDynamicSetter(MAKE_OPTIONS_DATA_CONTROL(SetTextureQuality));
+
+			TextureQuality->AddEditDependencyData(CreatedOverallQuality);
+			CreatedOverallQuality->AddEditDependencyData(TextureQuality);
+			
+			GraphicsCategoryCollection->AddChildListData(TextureQuality);
+		}
+
+		// Visual Effects Quality
+		{
+			UIh_ListDataObject_StringInteger* VisualEffectQuality = NewObject<UIh_ListDataObject_StringInteger>();
+			VisualEffectQuality->SetDataID(FName("VisualEffectQuality"));
+			VisualEffectQuality->SetDataDisplayName(FText::FromString(TEXT("Visual Effect Quality")));
+			VisualEffectQuality->SetDescriptionRichText(FText::FromString(TEXT("Controls the quality and complexity of visual effects, including particles, lighting effects, and environmental effects. Higher settings offer more immersive visuals but may impact performance.")));
+			VisualEffectQuality->AddIntegerOption(0, FText::FromString(TEXT("Low")));
+			VisualEffectQuality->AddIntegerOption(1, FText::FromString(TEXT("Medium")));
+			VisualEffectQuality->AddIntegerOption(2, FText::FromString(TEXT("High")));
+			VisualEffectQuality->AddIntegerOption(3, FText::FromString(TEXT("Epic")));
+			VisualEffectQuality->AddIntegerOption(4, FText::FromString(TEXT("Cinematic")));
+			VisualEffectQuality->SetShouldApplyChangeImmediately(true);
+
+			VisualEffectQuality->SetDataDynamicGetter(MAKE_OPTIONS_DATA_CONTROL(GetVisualEffectQuality));
+			VisualEffectQuality->SetDataDynamicSetter(MAKE_OPTIONS_DATA_CONTROL(SetVisualEffectQuality));
+
+			VisualEffectQuality->AddEditDependencyData(CreatedOverallQuality);
+			CreatedOverallQuality->AddEditDependencyData(VisualEffectQuality);
+			
+			GraphicsCategoryCollection->AddChildListData(VisualEffectQuality);
+		}
+
+		// Reflection Quality
+		{
+			UIh_ListDataObject_StringInteger* ReflectionQuality = NewObject<UIh_ListDataObject_StringInteger>();
+			ReflectionQuality->SetDataID(FName("ReflectionQuality"));
+			ReflectionQuality->SetDataDisplayName(FText::FromString(TEXT("Reflection Quality")));
+			ReflectionQuality->SetDescriptionRichText(FText::FromString(TEXT("Controls the quality and accuracy of reflections on surfaces like water, glass, and metal. Higher settings provide more realistic reflections but can reduce performance.")));
+			ReflectionQuality->AddIntegerOption(0, FText::FromString(TEXT("Low")));
+			ReflectionQuality->AddIntegerOption(1, FText::FromString(TEXT("Medium")));
+			ReflectionQuality->AddIntegerOption(2, FText::FromString(TEXT("High")));
+			ReflectionQuality->AddIntegerOption(3, FText::FromString(TEXT("Epic")));
+			ReflectionQuality->AddIntegerOption(4, FText::FromString(TEXT("Cinematic")));
+			ReflectionQuality->SetShouldApplyChangeImmediately(true);
+
+			ReflectionQuality->SetDataDynamicGetter(MAKE_OPTIONS_DATA_CONTROL(GetReflectionQuality));
+			ReflectionQuality->SetDataDynamicSetter(MAKE_OPTIONS_DATA_CONTROL(SetReflectionQuality));
+
+			ReflectionQuality->AddEditDependencyData(CreatedOverallQuality);
+			CreatedOverallQuality->AddEditDependencyData(ReflectionQuality);
+			
+			GraphicsCategoryCollection->AddChildListData(ReflectionQuality);
+		}
+
+		// Post-Processing Quality
+		{
+			UIh_ListDataObject_StringInteger* PostProcessingQuality = NewObject<UIh_ListDataObject_StringInteger>();
+			PostProcessingQuality->SetDataID(FName("PostProcessingQuality"));
+			PostProcessingQuality->SetDataDisplayName(FText::FromString(TEXT("Post-Processing Quality")));
+			PostProcessingQuality->SetDescriptionRichText(FText::FromString(TEXT("Controls the quality of post-processing effects such as bloom, depth of field, motion blur, lens flares, and color grading. Higher settings enhance visual fidelity but may impact performance.")));
+			PostProcessingQuality->AddIntegerOption(0, FText::FromString(TEXT("Low")));
+			PostProcessingQuality->AddIntegerOption(1, FText::FromString(TEXT("Medium")));
+			PostProcessingQuality->AddIntegerOption(2, FText::FromString(TEXT("High")));
+			PostProcessingQuality->AddIntegerOption(3, FText::FromString(TEXT("Epic")));
+			PostProcessingQuality->AddIntegerOption(4, FText::FromString(TEXT("Cinematic")));
+			PostProcessingQuality->SetShouldApplyChangeImmediately(true);
+
+			PostProcessingQuality->SetDataDynamicGetter(MAKE_OPTIONS_DATA_CONTROL(GetPostProcessingQuality));
+			PostProcessingQuality->SetDataDynamicSetter(MAKE_OPTIONS_DATA_CONTROL(SetPostProcessingQuality));
+
+			PostProcessingQuality->AddEditDependencyData(CreatedOverallQuality);
+			CreatedOverallQuality->AddEditDependencyData(PostProcessingQuality);
+			
+			GraphicsCategoryCollection->AddChildListData(PostProcessingQuality);
+		}
 	}
 
 	RegisteredOptionsTabCollections.Add(VideoTabCollection);
