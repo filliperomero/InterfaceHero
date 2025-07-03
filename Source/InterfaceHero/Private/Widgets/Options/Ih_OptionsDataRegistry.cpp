@@ -413,10 +413,53 @@ void UIh_OptionsDataRegistry::InitVideoCollectionTab()
 			GlobalIlluminationQuality->SetShouldApplyChangeImmediately(true);
 
 			GlobalIlluminationQuality->AddEditDependencyData(CreatedOverallQuality);
-
 			CreatedOverallQuality->AddEditDependencyData(GlobalIlluminationQuality);
 			
 			GraphicsCategoryCollection->AddChildListData(GlobalIlluminationQuality);
+		}
+
+		// Shadow Quality
+		{
+			UIh_ListDataObject_StringInteger* ShadowQuality = NewObject<UIh_ListDataObject_StringInteger>();
+			ShadowQuality->SetDataID(FName("ShadowQuality"));
+			ShadowQuality->SetDataDisplayName(FText::FromString(TEXT("Shadow Quality")));
+			ShadowQuality->SetDescriptionRichText(FText::FromString(TEXT("Controls the quality and detail of shadows in the game. Higher settings produce sharper, more realistic shadows but may reduce performance.")));
+			ShadowQuality->AddIntegerOption(0, FText::FromString(TEXT("Low")));
+			ShadowQuality->AddIntegerOption(1, FText::FromString(TEXT("Normal")));
+			ShadowQuality->AddIntegerOption(2, FText::FromString(TEXT("High")));
+			ShadowQuality->AddIntegerOption(3, FText::FromString(TEXT("Epic")));
+			ShadowQuality->AddIntegerOption(4, FText::FromString(TEXT("Cinematic")));
+			ShadowQuality->SetShouldApplyChangeImmediately(true);
+
+			ShadowQuality->SetDataDynamicGetter(MAKE_OPTIONS_DATA_CONTROL(GetShadowQuality));
+			ShadowQuality->SetDataDynamicSetter(MAKE_OPTIONS_DATA_CONTROL(SetShadowQuality));
+
+			ShadowQuality->AddEditDependencyData(CreatedOverallQuality);
+			CreatedOverallQuality->AddEditDependencyData(ShadowQuality);
+			
+			GraphicsCategoryCollection->AddChildListData(ShadowQuality);
+		}
+
+		// AntiAliasing Quality
+		{
+			UIh_ListDataObject_StringInteger* AntiAliasingQuality = NewObject<UIh_ListDataObject_StringInteger>();
+			AntiAliasingQuality->SetDataID(FName("AntiAliasingQuality"));
+			AntiAliasingQuality->SetDataDisplayName(FText::FromString(TEXT("Anti Aliasing")));
+			AntiAliasingQuality->SetDescriptionRichText(FText::FromString(TEXT("Controls the quality of anti-aliasing, which smooths jagged edges on objects. Higher settings provide cleaner visuals but may impact performance.")));
+			AntiAliasingQuality->AddIntegerOption(0, FText::FromString(TEXT("Low")));
+			AntiAliasingQuality->AddIntegerOption(1, FText::FromString(TEXT("Normal")));
+			AntiAliasingQuality->AddIntegerOption(2, FText::FromString(TEXT("High")));
+			AntiAliasingQuality->AddIntegerOption(3, FText::FromString(TEXT("Epic")));
+			AntiAliasingQuality->AddIntegerOption(4, FText::FromString(TEXT("Cinematic")));
+			AntiAliasingQuality->SetShouldApplyChangeImmediately(true);
+
+			AntiAliasingQuality->SetDataDynamicGetter(MAKE_OPTIONS_DATA_CONTROL(GetAntiAliasingQuality));
+			AntiAliasingQuality->SetDataDynamicSetter(MAKE_OPTIONS_DATA_CONTROL(SetAntiAliasingQuality));
+
+			AntiAliasingQuality->AddEditDependencyData(CreatedOverallQuality);
+			CreatedOverallQuality->AddEditDependencyData(AntiAliasingQuality);
+			
+			GraphicsCategoryCollection->AddChildListData(AntiAliasingQuality);
 		}
 	}
 
