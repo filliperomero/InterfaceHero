@@ -12,6 +12,9 @@ void UIh_ListDataObject_StringInteger::OnEditDependencyDataModified(UIh_ListData
 {
 	if (DataDynamicGetter)
 	{
+		// This will avoid an infinite loop when we have a two-way dependency
+		if (CurrentStringValue == DataDynamicGetter->GetValueAsString()) return;
+		
 		CurrentStringValue = DataDynamicGetter->GetValueAsString();
 
 		if (!TrySetDisplayTextFromStringValue(CurrentStringValue))
