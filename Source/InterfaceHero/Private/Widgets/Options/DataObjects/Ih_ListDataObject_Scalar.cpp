@@ -71,6 +71,13 @@ bool UIh_ListDataObject_Scalar::TryResetBackToDefaultValue()
 	return false;
 }
 
+void UIh_ListDataObject_Scalar::OnEditDependencyDataModified(UIh_ListDataObject_Base* ModifiedDependencyData, EIh_OptionsListDataModifyReason ModifyReason)
+{
+	NotifyListDataModified(this, EIh_OptionsListDataModifyReason::DependencyModified);
+	
+	Super::OnEditDependencyDataModified(ModifiedDependencyData, ModifyReason);
+}
+
 float UIh_ListDataObject_Scalar::StringToFloat(const FString& InString) const
 {
 	float OutConvertedValue = 0.f;

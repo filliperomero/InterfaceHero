@@ -351,6 +351,8 @@ void UIh_OptionsDataRegistry::InitVideoCollectionTab()
 			GraphicsCategoryCollection->AddChildListData(DisplayGamma);
 		}
 
+		UIh_ListDataObject_StringInteger* CreatedOverallQuality = nullptr;
+		
 		// Overall Quality
 		{
 			UIh_ListDataObject_StringInteger* OverallQuality = NewObject<UIh_ListDataObject_StringInteger>();
@@ -369,6 +371,28 @@ void UIh_OptionsDataRegistry::InitVideoCollectionTab()
 			OverallQuality->SetShouldApplyChangeImmediately(true);
 			
 			GraphicsCategoryCollection->AddChildListData(OverallQuality);
+			CreatedOverallQuality = OverallQuality;
+		}
+
+		// Resolution Scale
+		{
+			UIh_ListDataObject_Scalar* ResolutionScale = NewObject<UIh_ListDataObject_Scalar>();
+			ResolutionScale->SetDataID(FName("ResolutionScale"));
+			ResolutionScale->SetDataDisplayName(FText::FromString(TEXT("3D Resolution")));
+			ResolutionScale->SetDescriptionRichText(FText::FromString(TEXT("Changes how sharp the game looks by rendering it at a higher or lower resolution than your screen. Lower values improve performance; higher values increase visual quality.")));
+			ResolutionScale->SetDisplayValueRange(TRange<float>(0.f, 1.f));
+			ResolutionScale->SetOutputValueRange(TRange<float>(0.f, 1.f));
+			ResolutionScale->SetDisplayNumericType(ECommonNumericType::Percentage);
+			ResolutionScale->SetNumberFormattingOptions(UIh_ListDataObject_Scalar::NoDecimal());
+
+			ResolutionScale->SetDataDynamicGetter(MAKE_OPTIONS_DATA_CONTROL(GetResolutionScaleNormalized));
+			ResolutionScale->SetDataDynamicSetter(MAKE_OPTIONS_DATA_CONTROL(SetResolutionScaleNormalized));
+
+			ResolutionScale->SetShouldApplyChangeImmediately(true);
+
+			ResolutionScale->AddEditDependencyData(CreatedOverallQuality);
+			
+			GraphicsCategoryCollection->AddChildListData(ResolutionScale);
 		}
 	}
 

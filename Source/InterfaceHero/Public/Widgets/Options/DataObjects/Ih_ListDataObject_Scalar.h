@@ -23,6 +23,9 @@ public:
 	virtual bool CanResetBackToDefaultValue() const override;
 	virtual bool TryResetBackToDefaultValue() override;
 
+protected:
+	virtual void OnEditDependencyDataModified(UIh_ListDataObject_Base* ModifiedDependencyData, EIh_OptionsListDataModifyReason ModifyReason = EIh_OptionsListDataModifyReason::DirectlyModified) override;
+
 private:
 	float StringToFloat(const FString& InString) const;
 	
