@@ -394,6 +394,30 @@ void UIh_OptionsDataRegistry::InitVideoCollectionTab()
 			
 			GraphicsCategoryCollection->AddChildListData(ResolutionScale);
 		}
+
+		// Global Illumination Quality
+		{
+			UIh_ListDataObject_StringInteger* GlobalIlluminationQuality = NewObject<UIh_ListDataObject_StringInteger>();
+			GlobalIlluminationQuality->SetDataID(FName("GlobalIlluminationQuality"));
+			GlobalIlluminationQuality->SetDataDisplayName(FText::FromString(TEXT("Global Illumination")));
+			GlobalIlluminationQuality->SetDescriptionRichText(FText::FromString(TEXT("Adjusts how realistically light bounces and fills the scene. Higher settings look better but can lower performance.")));
+			GlobalIlluminationQuality->AddIntegerOption(0, FText::FromString(TEXT("Low")));
+			GlobalIlluminationQuality->AddIntegerOption(1, FText::FromString(TEXT("Normal")));
+			GlobalIlluminationQuality->AddIntegerOption(2, FText::FromString(TEXT("High")));
+			GlobalIlluminationQuality->AddIntegerOption(3, FText::FromString(TEXT("Epic")));
+			GlobalIlluminationQuality->AddIntegerOption(4, FText::FromString(TEXT("Cinematic")));
+
+			GlobalIlluminationQuality->SetDataDynamicGetter(MAKE_OPTIONS_DATA_CONTROL(GetGlobalIlluminationQuality));
+			GlobalIlluminationQuality->SetDataDynamicSetter(MAKE_OPTIONS_DATA_CONTROL(SetGlobalIlluminationQuality));
+
+			GlobalIlluminationQuality->SetShouldApplyChangeImmediately(true);
+
+			GlobalIlluminationQuality->AddEditDependencyData(CreatedOverallQuality);
+
+			CreatedOverallQuality->AddEditDependencyData(GlobalIlluminationQuality);
+			
+			GraphicsCategoryCollection->AddChildListData(GlobalIlluminationQuality);
+		}
 	}
 
 	RegisteredOptionsTabCollections.Add(VideoTabCollection);
