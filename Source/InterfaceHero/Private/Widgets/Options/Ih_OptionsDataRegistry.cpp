@@ -11,6 +11,7 @@
 #include "Widgets/Options/DataObjects/Ih_ListDataObject_String.h"
 #include "Widgets/Options/DataObjects/Ih_ListDataObject_StringBool.h"
 #include "Widgets/Options/DataObjects/Ih_ListDataObject_StringEnum.h"
+#include "Widgets/Options/DataObjects/Ih_ListDataObject_StringInteger.h"
 #include "Widgets/Options/DataObjects/Ih_ListDataObject_StringResolution.h"
 
 #define MAKE_OPTIONS_DATA_CONTROL(SetterOrGetterFuncName) \
@@ -348,6 +349,26 @@ void UIh_OptionsDataRegistry::InitVideoCollectionTab()
 			DisplayGamma->SetDataDynamicSetter(MAKE_OPTIONS_DATA_CONTROL(SetCurrentDisplayGamma));
 			
 			GraphicsCategoryCollection->AddChildListData(DisplayGamma);
+		}
+
+		// Overall Quality
+		{
+			UIh_ListDataObject_StringInteger* OverallQuality = NewObject<UIh_ListDataObject_StringInteger>();
+			OverallQuality->SetDataID(FName("OverallQuality"));
+			OverallQuality->SetDataDisplayName(FText::FromString(TEXT("Overall Quality")));
+			OverallQuality->SetDescriptionRichText(FText::FromString(TEXT("Changes the overall graphics quality. Higher settings look better but may lower performance on some systems.")));
+			OverallQuality->AddIntegerOption(0, FText::FromString(TEXT("Low")));
+			OverallQuality->AddIntegerOption(1, FText::FromString(TEXT("Normal")));
+			OverallQuality->AddIntegerOption(2, FText::FromString(TEXT("High")));
+			OverallQuality->AddIntegerOption(3, FText::FromString(TEXT("Epic")));
+			OverallQuality->AddIntegerOption(4, FText::FromString(TEXT("Cinematic")));
+
+			OverallQuality->SetDataDynamicGetter(MAKE_OPTIONS_DATA_CONTROL(GetOverallScalabilityLevel));
+			OverallQuality->SetDataDynamicSetter(MAKE_OPTIONS_DATA_CONTROL(SetOverallScalabilityLevel));
+
+			OverallQuality->SetShouldApplyChangeImmediately(true);
+			
+			GraphicsCategoryCollection->AddChildListData(OverallQuality);
 		}
 	}
 
