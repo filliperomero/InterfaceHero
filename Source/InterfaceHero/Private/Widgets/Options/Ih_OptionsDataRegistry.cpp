@@ -573,6 +573,42 @@ void UIh_OptionsDataRegistry::InitVideoCollectionTab()
 		}
 	}
 
+	// Advanced Graphics Category
+	{
+		UIh_ListDataObject_Collection* AdvancedGraphicsCategoryCollection = NewObject<UIh_ListDataObject_Collection>();
+		AdvancedGraphicsCategoryCollection->SetDataID(FName("AdvancedGraphicsCategoryCollection"));
+		AdvancedGraphicsCategoryCollection->SetDataDisplayName(FText::FromString(TEXT("Advanced Graphics")));
+
+		VideoTabCollection->AddChildListData(AdvancedGraphicsCategoryCollection);
+
+		// Vertical Sync
+		{
+			UIh_ListDataObject_StringBool* VerticalSync = NewObject<UIh_ListDataObject_StringBool>();
+			VerticalSync->SetDataID(FName("VerticalSync"));
+			VerticalSync->SetDataDisplayName(FText::FromString(TEXT("V-Sync")));
+			VerticalSync->OverrideTrueDisplayText(FText::FromString(TEXT("Enabled")));
+			VerticalSync->OverrideFalseDisplayText(FText::FromString(TEXT("Disabled")));
+			VerticalSync->SetDescriptionRichText(FText::FromString(TEXT("Enables or disables Vertical Sync (VSync), which synchronizes the game's frame rate with your monitor's refresh rate to prevent screen tearing. May introduce input latency when enabled.")));
+			VerticalSync->SetFalseAsDefaultValue();
+			VerticalSync->SetShouldApplyChangeImmediately(true);
+
+			VerticalSync->SetDataDynamicGetter(MAKE_OPTIONS_DATA_CONTROL(IsVSyncEnabled));
+			VerticalSync->SetDataDynamicSetter(MAKE_OPTIONS_DATA_CONTROL(SetVSyncEnabled));
+
+			FOptionsDataEditConditionDescriptor FullscreenOnlyCondition;
+			FullscreenOnlyCondition.SetDisabledRichReason(TEXT("\n\n<Disabled>This feature only works if the 'Window Mode' is set to 'Fullscreen'.</>"));
+			FullscreenOnlyCondition.SetForcedStringValue(TEXT("false"));
+			FullscreenOnlyCondition.SetEditConditionFunc([CreatedWindowMode]()->bool
+			{
+				return CreatedWindowMode->GetCurrentValueAsEnum<EWindowMode::Type>() == EWindowMode::Fullscreen;
+			});
+
+			VerticalSync->AddEditCondition(FullscreenOnlyCondition);
+
+			AdvancedGraphicsCategoryCollection->AddChildListData(VerticalSync);
+		}
+	}
+	
 	RegisteredOptionsTabCollections.Add(VideoTabCollection);
 }
 
