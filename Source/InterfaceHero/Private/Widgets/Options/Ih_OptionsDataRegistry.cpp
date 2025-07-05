@@ -344,6 +344,7 @@ void UIh_OptionsDataRegistry::InitVideoCollectionTab()
 			DisplayGamma->SetDescriptionRichText(GET_DESCRIPTION("DisplayGammaDescKey"));
 			DisplayGamma->SetDisplayValueRange(TRange<float>(0.f, 1.f));
 			DisplayGamma->SetOutputValueRange(TRange<float>(1.7f, 2.7f)); // The default value Unreal has is: 2.2f which is in the middle of 1.7 and 2.7
+			DisplayGamma->SetSliderStepSize(0.01f);
 			DisplayGamma->SetDisplayNumericType(ECommonNumericType::Percentage);
 			DisplayGamma->SetNumberFormattingOptions(UIh_ListDataObject_Scalar::NoDecimal());
 			DisplayGamma->SetDefaultValueFromString(LexToString(2.2f));
@@ -385,6 +386,7 @@ void UIh_OptionsDataRegistry::InitVideoCollectionTab()
 			ResolutionScale->SetDescriptionRichText(GET_DESCRIPTION("ResolutionScaleDescKey"));
 			ResolutionScale->SetDisplayValueRange(TRange<float>(0.f, 1.f));
 			ResolutionScale->SetOutputValueRange(TRange<float>(0.f, 1.f));
+			ResolutionScale->SetSliderStepSize(0.01f);
 			ResolutionScale->SetDisplayNumericType(ECommonNumericType::Percentage);
 			ResolutionScale->SetNumberFormattingOptions(UIh_ListDataObject_Scalar::NoDecimal());
 
