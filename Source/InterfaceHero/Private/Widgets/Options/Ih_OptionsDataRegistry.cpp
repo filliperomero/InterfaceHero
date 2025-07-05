@@ -13,9 +13,12 @@
 #include "Widgets/Options/DataObjects/Ih_ListDataObject_StringEnum.h"
 #include "Widgets/Options/DataObjects/Ih_ListDataObject_StringInteger.h"
 #include "Widgets/Options/DataObjects/Ih_ListDataObject_StringResolution.h"
+#include "Internationalization/StringTableRegistry.h"
 
 #define MAKE_OPTIONS_DATA_CONTROL(SetterOrGetterFuncName) \
 	MakeShared<FIh_OptionsDataInteractionHelper>(GET_FUNCTION_NAME_STRING_CHECKED(UIh_GameUserSettings,SetterOrGetterFuncName))
+
+#define GET_DESCRIPTION(InKey) LOCTABLE("/Game/Blueprints/StringTables/ST_OptionsScreenDescription.ST_OptionsScreenDescription", InKey)
 
 void UIh_OptionsDataRegistry::InitOptionsDataRegistry(ULocalPlayer* InOwningLocalPlayer)
 {
@@ -275,7 +278,7 @@ void UIh_OptionsDataRegistry::InitVideoCollectionTab()
 			UIh_ListDataObject_StringEnum* WindowMode = NewObject<UIh_ListDataObject_StringEnum>();
 			WindowMode->SetDataID(FName("WindowMode"));
 			WindowMode->SetDataDisplayName(FText::FromString(TEXT("Window Mode")));
-			WindowMode->SetDescriptionRichText(FText::FromString(TEXT("Sets how the game window is displayed: Fullscreen, Windowed, or Borderless Windowed. Affects performance and how the game interacts with other applications.")));
+			WindowMode->SetDescriptionRichText(GET_DESCRIPTION("WindowModeDescKey"));
 			WindowMode->AddEnumOption(EWindowMode::Fullscreen, FText::FromString(TEXT("Fullscreen")));
 			WindowMode->AddEnumOption(EWindowMode::Windowed, FText::FromString(TEXT("Windowed")));
 			WindowMode->AddEnumOption(EWindowMode::WindowedFullscreen, FText::FromString(TEXT("Borderless Windowed")));
@@ -298,7 +301,7 @@ void UIh_OptionsDataRegistry::InitVideoCollectionTab()
 			UIh_ListDataObject_StringResolution* ScreenResolution = NewObject<UIh_ListDataObject_StringResolution>();
 			ScreenResolution->SetDataID(FName("ScreenResolution"));
 			ScreenResolution->SetDataDisplayName(FText::FromString(TEXT("Screen Resolution")));
-			ScreenResolution->SetDescriptionRichText(FText::FromString(TEXT("Sets the game's display resolution. Higher resolutions offer sharper visuals but may reduce performance on lower-end systems.")));
+			ScreenResolution->SetDescriptionRichText(GET_DESCRIPTION("ScreenResolutionsDescKey"));
 			ScreenResolution->InitResolutionValues();
 
 			ScreenResolution->SetDataDynamicGetter(MAKE_OPTIONS_DATA_CONTROL(GetScreenResolution));
@@ -338,7 +341,7 @@ void UIh_OptionsDataRegistry::InitVideoCollectionTab()
 			UIh_ListDataObject_Scalar* DisplayGamma = NewObject<UIh_ListDataObject_Scalar>();
 			DisplayGamma->SetDataID(FName("DisplayGamma"));
 			DisplayGamma->SetDataDisplayName(FText::FromString(TEXT("Display Gamma")));
-			DisplayGamma->SetDescriptionRichText(FText::FromString(TEXT("Changes how bright the game looks. Useful for making dark scenes easier to see.")));
+			DisplayGamma->SetDescriptionRichText(GET_DESCRIPTION("DisplayGammaDescKey"));
 			DisplayGamma->SetDisplayValueRange(TRange<float>(0.f, 1.f));
 			DisplayGamma->SetOutputValueRange(TRange<float>(1.7f, 2.7f)); // The default value Unreal has is: 2.2f which is in the middle of 1.7 and 2.7
 			DisplayGamma->SetDisplayNumericType(ECommonNumericType::Percentage);
@@ -358,7 +361,7 @@ void UIh_OptionsDataRegistry::InitVideoCollectionTab()
 			UIh_ListDataObject_StringInteger* OverallQuality = NewObject<UIh_ListDataObject_StringInteger>();
 			OverallQuality->SetDataID(FName("OverallQuality"));
 			OverallQuality->SetDataDisplayName(FText::FromString(TEXT("Overall Quality")));
-			OverallQuality->SetDescriptionRichText(FText::FromString(TEXT("Changes the overall graphics quality. Higher settings look better but may lower performance on some systems.")));
+			OverallQuality->SetDescriptionRichText(GET_DESCRIPTION("OverallQualityDescKey"));
 			OverallQuality->AddIntegerOption(0, FText::FromString(TEXT("Low")));
 			OverallQuality->AddIntegerOption(1, FText::FromString(TEXT("Medium")));
 			OverallQuality->AddIntegerOption(2, FText::FromString(TEXT("High")));
@@ -379,7 +382,7 @@ void UIh_OptionsDataRegistry::InitVideoCollectionTab()
 			UIh_ListDataObject_Scalar* ResolutionScale = NewObject<UIh_ListDataObject_Scalar>();
 			ResolutionScale->SetDataID(FName("ResolutionScale"));
 			ResolutionScale->SetDataDisplayName(FText::FromString(TEXT("3D Resolution")));
-			ResolutionScale->SetDescriptionRichText(FText::FromString(TEXT("Changes how sharp the game looks by rendering it at a higher or lower resolution than your screen. Lower values improve performance; higher values increase visual quality.")));
+			ResolutionScale->SetDescriptionRichText(GET_DESCRIPTION("ResolutionScaleDescKey"));
 			ResolutionScale->SetDisplayValueRange(TRange<float>(0.f, 1.f));
 			ResolutionScale->SetOutputValueRange(TRange<float>(0.f, 1.f));
 			ResolutionScale->SetDisplayNumericType(ECommonNumericType::Percentage);
@@ -400,7 +403,7 @@ void UIh_OptionsDataRegistry::InitVideoCollectionTab()
 			UIh_ListDataObject_StringInteger* GlobalIlluminationQuality = NewObject<UIh_ListDataObject_StringInteger>();
 			GlobalIlluminationQuality->SetDataID(FName("GlobalIlluminationQuality"));
 			GlobalIlluminationQuality->SetDataDisplayName(FText::FromString(TEXT("Global Illumination")));
-			GlobalIlluminationQuality->SetDescriptionRichText(FText::FromString(TEXT("Adjusts how realistically light bounces and fills the scene. Higher settings look better but can lower performance.")));
+			GlobalIlluminationQuality->SetDescriptionRichText(GET_DESCRIPTION("GlobalIlluminationQualityDescKey"));
 			GlobalIlluminationQuality->AddIntegerOption(0, FText::FromString(TEXT("Low")));
 			GlobalIlluminationQuality->AddIntegerOption(1, FText::FromString(TEXT("Medium")));
 			GlobalIlluminationQuality->AddIntegerOption(2, FText::FromString(TEXT("High")));
@@ -423,7 +426,7 @@ void UIh_OptionsDataRegistry::InitVideoCollectionTab()
 			UIh_ListDataObject_StringInteger* ShadowQuality = NewObject<UIh_ListDataObject_StringInteger>();
 			ShadowQuality->SetDataID(FName("ShadowQuality"));
 			ShadowQuality->SetDataDisplayName(FText::FromString(TEXT("Shadow Quality")));
-			ShadowQuality->SetDescriptionRichText(FText::FromString(TEXT("Controls the quality and detail of shadows in the game. Higher settings produce sharper, more realistic shadows but may reduce performance.")));
+			ShadowQuality->SetDescriptionRichText(GET_DESCRIPTION("ShadowQualityDescKey"));
 			ShadowQuality->AddIntegerOption(0, FText::FromString(TEXT("Low")));
 			ShadowQuality->AddIntegerOption(1, FText::FromString(TEXT("Medium")));
 			ShadowQuality->AddIntegerOption(2, FText::FromString(TEXT("High")));
@@ -445,7 +448,7 @@ void UIh_OptionsDataRegistry::InitVideoCollectionTab()
 			UIh_ListDataObject_StringInteger* AntiAliasingQuality = NewObject<UIh_ListDataObject_StringInteger>();
 			AntiAliasingQuality->SetDataID(FName("AntiAliasingQuality"));
 			AntiAliasingQuality->SetDataDisplayName(FText::FromString(TEXT("Anti Aliasing")));
-			AntiAliasingQuality->SetDescriptionRichText(FText::FromString(TEXT("Controls the quality of anti-aliasing, which smooths jagged edges on objects. Higher settings provide cleaner visuals but may impact performance.")));
+			AntiAliasingQuality->SetDescriptionRichText(GET_DESCRIPTION("AntiAliasingDescKey"));
 			AntiAliasingQuality->AddIntegerOption(0, FText::FromString(TEXT("Low")));
 			AntiAliasingQuality->AddIntegerOption(1, FText::FromString(TEXT("Medium")));
 			AntiAliasingQuality->AddIntegerOption(2, FText::FromString(TEXT("High")));
@@ -467,7 +470,7 @@ void UIh_OptionsDataRegistry::InitVideoCollectionTab()
 			UIh_ListDataObject_StringInteger* ViewDistanceQuality = NewObject<UIh_ListDataObject_StringInteger>();
 			ViewDistanceQuality->SetDataID(FName("ViewDistanceQuality"));
 			ViewDistanceQuality->SetDataDisplayName(FText::FromString(TEXT("View Distance")));
-			ViewDistanceQuality->SetDescriptionRichText(FText::FromString(TEXT("Controls how far into the distance objects are rendered with full detail. Higher settings increase visual clarity at long range but may impact performance.")));
+			ViewDistanceQuality->SetDescriptionRichText(GET_DESCRIPTION("ViewDistanceDescKey"));
 			ViewDistanceQuality->AddIntegerOption(0, FText::FromString(TEXT("Near")));
 			ViewDistanceQuality->AddIntegerOption(1, FText::FromString(TEXT("Medium")));
 			ViewDistanceQuality->AddIntegerOption(2, FText::FromString(TEXT("Far")));
@@ -489,7 +492,7 @@ void UIh_OptionsDataRegistry::InitVideoCollectionTab()
 			UIh_ListDataObject_StringInteger* TextureQuality = NewObject<UIh_ListDataObject_StringInteger>();
 			TextureQuality->SetDataID(FName("TextureQuality"));
 			TextureQuality->SetDataDisplayName(FText::FromString(TEXT("Texture Quality")));
-			TextureQuality->SetDescriptionRichText(FText::FromString(TEXT("Controls the resolution of textures used in the game. Higher settings provide sharper, more detailed surfaces but require more video memory and may affect performance on lower-end systems.")));
+			TextureQuality->SetDescriptionRichText(GET_DESCRIPTION("TextureQualityDescKey"));
 			TextureQuality->AddIntegerOption(0, FText::FromString(TEXT("Low")));
 			TextureQuality->AddIntegerOption(1, FText::FromString(TEXT("Medium")));
 			TextureQuality->AddIntegerOption(2, FText::FromString(TEXT("High")));
@@ -511,7 +514,7 @@ void UIh_OptionsDataRegistry::InitVideoCollectionTab()
 			UIh_ListDataObject_StringInteger* VisualEffectQuality = NewObject<UIh_ListDataObject_StringInteger>();
 			VisualEffectQuality->SetDataID(FName("VisualEffectQuality"));
 			VisualEffectQuality->SetDataDisplayName(FText::FromString(TEXT("Visual Effect Quality")));
-			VisualEffectQuality->SetDescriptionRichText(FText::FromString(TEXT("Controls the quality and complexity of visual effects, including particles, lighting effects, and environmental effects. Higher settings offer more immersive visuals but may impact performance.")));
+			VisualEffectQuality->SetDescriptionRichText(GET_DESCRIPTION("VisualEffectQualityDescKey"));
 			VisualEffectQuality->AddIntegerOption(0, FText::FromString(TEXT("Low")));
 			VisualEffectQuality->AddIntegerOption(1, FText::FromString(TEXT("Medium")));
 			VisualEffectQuality->AddIntegerOption(2, FText::FromString(TEXT("High")));
@@ -533,7 +536,7 @@ void UIh_OptionsDataRegistry::InitVideoCollectionTab()
 			UIh_ListDataObject_StringInteger* ReflectionQuality = NewObject<UIh_ListDataObject_StringInteger>();
 			ReflectionQuality->SetDataID(FName("ReflectionQuality"));
 			ReflectionQuality->SetDataDisplayName(FText::FromString(TEXT("Reflection Quality")));
-			ReflectionQuality->SetDescriptionRichText(FText::FromString(TEXT("Controls the quality and accuracy of reflections on surfaces like water, glass, and metal. Higher settings provide more realistic reflections but can reduce performance.")));
+			ReflectionQuality->SetDescriptionRichText(GET_DESCRIPTION("ReflectionQualityDescKey"));
 			ReflectionQuality->AddIntegerOption(0, FText::FromString(TEXT("Low")));
 			ReflectionQuality->AddIntegerOption(1, FText::FromString(TEXT("Medium")));
 			ReflectionQuality->AddIntegerOption(2, FText::FromString(TEXT("High")));
@@ -555,7 +558,7 @@ void UIh_OptionsDataRegistry::InitVideoCollectionTab()
 			UIh_ListDataObject_StringInteger* PostProcessingQuality = NewObject<UIh_ListDataObject_StringInteger>();
 			PostProcessingQuality->SetDataID(FName("PostProcessingQuality"));
 			PostProcessingQuality->SetDataDisplayName(FText::FromString(TEXT("Post-Processing Quality")));
-			PostProcessingQuality->SetDescriptionRichText(FText::FromString(TEXT("Controls the quality of post-processing effects such as bloom, depth of field, motion blur, lens flares, and color grading. Higher settings enhance visual fidelity but may impact performance.")));
+			PostProcessingQuality->SetDescriptionRichText(GET_DESCRIPTION("PostProcessingQualityDescKey"));
 			PostProcessingQuality->AddIntegerOption(0, FText::FromString(TEXT("Low")));
 			PostProcessingQuality->AddIntegerOption(1, FText::FromString(TEXT("Medium")));
 			PostProcessingQuality->AddIntegerOption(2, FText::FromString(TEXT("High")));
@@ -588,7 +591,7 @@ void UIh_OptionsDataRegistry::InitVideoCollectionTab()
 			VerticalSync->SetDataDisplayName(FText::FromString(TEXT("V-Sync")));
 			VerticalSync->OverrideTrueDisplayText(FText::FromString(TEXT("Enabled")));
 			VerticalSync->OverrideFalseDisplayText(FText::FromString(TEXT("Disabled")));
-			VerticalSync->SetDescriptionRichText(FText::FromString(TEXT("Enables or disables Vertical Sync (VSync), which synchronizes the game's frame rate with your monitor's refresh rate to prevent screen tearing. May introduce input latency when enabled.")));
+			VerticalSync->SetDescriptionRichText(GET_DESCRIPTION("VerticalSyncDescKey"));
 			VerticalSync->SetFalseAsDefaultValue();
 			VerticalSync->SetShouldApplyChangeImmediately(true);
 
@@ -613,7 +616,7 @@ void UIh_OptionsDataRegistry::InitVideoCollectionTab()
 			UIh_ListDataObject_String* FrameRateLimit = NewObject<UIh_ListDataObject_String>();
 			FrameRateLimit->SetDataID(FName("FrameRateLimit"));
 			FrameRateLimit->SetDataDisplayName(FText::FromString(TEXT("Frame Rate Limit")));
-			FrameRateLimit->SetDescriptionRichText(FText::FromString(TEXT("Limits how many frames per second the game can run. Can help reduce power usage and keep performance stable.")));
+			FrameRateLimit->SetDescriptionRichText(GET_DESCRIPTION("FrameRateLimitDescKey"));
 			FrameRateLimit->AddDynamicOption(LexToString(30.f), FText::FromString(TEXT("30 FPS")));
 			FrameRateLimit->AddDynamicOption(LexToString(60.f), FText::FromString(TEXT("60 FPS")));
 			FrameRateLimit->AddDynamicOption(LexToString(90.f), FText::FromString(TEXT("90 FPS")));
