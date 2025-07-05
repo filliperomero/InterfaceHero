@@ -9,7 +9,8 @@
 
 void UIh_ListEntry_Base::NativeOnListEntryWidgetHovered(bool bIsHovered)
 {
-	BP_OnListEntryWidgetHovered(bIsHovered, IsListItemSelected());
+	// In some cases (when the widget is out of sight), IsListItemSelected throws since it does not check for nullptr, we need to do it manually
+	BP_OnListEntryWidgetHovered(bIsHovered, GetListItem() ? IsListItemSelected() : false);
 }
 
 void UIh_ListEntry_Base::NativeOnListItemObjectSet(UObject* ListItemObject)
