@@ -2,6 +2,8 @@
 
 #include "Widgets/Options/Ih_OptionsDataRegistry.h"
 
+#include "EnhancedInputSubsystems.h"
+#include "Ih_DebugHelper.h"
 #include "Ih_FunctionLibrary.h"
 #include "Ih_GameplayTags.h"
 #include "Settings/Ih_GameUserSettings.h"
@@ -14,6 +16,8 @@
 #include "Widgets/Options/DataObjects/Ih_ListDataObject_StringInteger.h"
 #include "Widgets/Options/DataObjects/Ih_ListDataObject_StringResolution.h"
 #include "Internationalization/StringTableRegistry.h"
+#include "UserSettings/EnhancedInputUserSettings.h"
+#include "Widgets/Options/DataObjects/Ih_ListDataObject_KeyRemap.h"
 
 #define MAKE_OPTIONS_DATA_CONTROL(SetterOrGetterFuncName) \
 	MakeShared<FIh_OptionsDataInteractionHelper>(GET_FUNCTION_NAME_STRING_CHECKED(UIh_GameUserSettings,SetterOrGetterFuncName))
@@ -25,7 +29,7 @@ void UIh_OptionsDataRegistry::InitOptionsDataRegistry(ULocalPlayer* InOwningLoca
 	InitGameplayCollectionTab();
 	InitAudioCollectionTab();
 	InitVideoCollectionTab();
-	InitControlCollectionTab();
+	InitControlCollectionTab(InOwningLocalPlayer);
 }
 
 TArray<UIh_ListDataObject_Base*> UIh_OptionsDataRegistry::GetListSourceItemsBySelectedTabID(const FName& InSelectedTabID) const
@@ -637,11 +641,70 @@ void UIh_OptionsDataRegistry::InitVideoCollectionTab()
 	RegisteredOptionsTabCollections.Add(VideoTabCollection);
 }
 
-void UIh_OptionsDataRegistry::InitControlCollectionTab()
+void UIh_OptionsDataRegistry::InitControlCollectionTab(ULocalPlayer* InOwningLocalPlayer)
 {
 	UIh_ListDataObject_Collection* ControlTabCollection = NewObject<UIh_ListDataObject_Collection>();
 	ControlTabCollection->SetDataID(FName("ControlTabCollection"));
 	ControlTabCollection->SetDataDisplayName(FText::FromString(TEXT("Control")));
+
+	UEnhancedInputLocalPlayerSubsystem* EISubsystem = InOwningLocalPlayer->GetSubsystem<UEnhancedInputLocalPlayerSubsystem>();
+
+	check(EISubsystem);
+
+	UEnhancedInputUserSettings* EIUserSettings = EISubsystem->GetUserSettings();
+
+	check(EIUserSettings);
+
+	// Keyboard Mouse Category
+	{
+		UIh_ListDataObject_Collection* KeyboardMouseCategoryCollection = NewObject<UIh_ListDataObject_Collection>();
+		KeyboardMouseCategoryCollection->SetDataID(FName("KeyboardMouseCategoryCollection"));
+		KeyboardMouseCategoryCollection->SetDataDisplayName(FText::FromString(TEXT("Keyboard & Mouse")));
+
+		ControlTabCollection->AddChildListData(KeyboardMouseCategoryCollection);
+
+		// Keyboard mouse inputs
+		{
+			FPlayerMappableKeyQueryOptions KeyboardMouseOnly;
+			KeyboardMouseOnly.KeyToMatch = EKeys::S; // Can be any valid key from the keyboard
+			KeyboardMouseOnly.bMatchBasicKeyTypes = true;
+			
+			for (const TPair<FString, TObjectPtr<UEnhancedPlayerMappableKeyProfile>>& ProfilePair : EIUserSettings->GetAllAvailableKeyProfiles())
+			{
+				UEnhancedPlayerMappableKeyProfile* MappableKeyProfile = ProfilePair.Value;
+
+				check(MappableKeyProfile);
+
+				for (const TPair<FName, FKeyMappingRow>& MappingRowPair : MappableKeyProfile->GetPlayerMappingRows())
+				{
+					for (const FPlayerKeyMapping& KeyMapping : MappingRowPair.Value.Mappings)
+					{
+						if (MappableKeyProfile->DoesMappingPassQueryOptions(KeyMapping, KeyboardMouseOnly))
+						{
+							// Debug::Print(
+							// 	TEXT(" Mapping ID:") + KeyMapping.GetMappingName().ToString() +
+							// 	TEXT(" Display Name: ") + KeyMapping.GetDisplayName().ToString() +
+							// 	TEXT(" Bound Key: ") + KeyMapping.GetCurrentKey().ToString()
+							// 	);
+
+							UIh_ListDataObject_KeyRemap* KeyRemapDataObject = NewObject<UIh_ListDataObject_KeyRemap>();
+							KeyRemapDataObject->SetDataID(KeyMapping.GetMappingName());
+							KeyRemapDataObject->SetDataDisplayName(KeyMapping.GetDisplayName());
+							KeyRemapDataObject->InitKeyRemapData(EIUserSettings, MappableKeyProfile, ECommonInputType::MouseAndKeyboard, KeyMapping);
+
+							KeyboardMouseCategoryCollection->AddChildListData(KeyRemapDataObject);
+						}
+					}
+				}
+			}
+		}
+
+		// {
+		// 	FPlayerMappableKeyQueryOptions GamepadOnly;
+		// 	GamepadOnly.KeyToMatch = EKeys::Gamepad_FaceButton_Bottom;
+		// 	GamepadOnly.bMatchBasicKeyTypes = true;
+		// }
+	}
 
 	RegisteredOptionsTabCollections.Add(ControlTabCollection);
 }
