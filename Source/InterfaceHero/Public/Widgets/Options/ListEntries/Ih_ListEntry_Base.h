@@ -25,10 +25,15 @@ protected:
 	/** The Child WBP should override this function for the gamepad interaction to function properly */
 	UFUNCTION(BlueprintImplementableEvent, meta=(DisplayName="Get Widget To Focus For Gamepad"))
 	UWidget* BP_GetWidgetToFocusForGamepad() const;
+
+	/** The Child WBP should override it to handle the highlight state when this entry widget is hovered or selected  */
+	UFUNCTION(BlueprintImplementableEvent, meta=(DisplayName="On Toggle Entry Widget Highlight State"))
+	void BP_OnToggleEntryWidgetHighlightState(bool bShouldHighlight) const;
 	
 	virtual void NativeOnListItemObjectSet(UObject* ListItemObject) override;
 	virtual FReply NativeOnFocusReceived(const FGeometry& InGeometry, const FFocusEvent& InFocusEvent) override;
 	virtual void NativeOnEntryReleased() override;
+	virtual void NativeOnItemSelectionChanged(bool bIsSelected) override;
 
 	/** The Child Class should override this function to handle the initialization needed. Super call is expected. */
 	virtual void OnOwningListDataObjectSet(UIh_ListDataObject_Base* InOwningListDataObject);

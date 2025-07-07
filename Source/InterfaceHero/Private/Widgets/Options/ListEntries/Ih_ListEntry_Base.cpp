@@ -11,6 +11,15 @@ void UIh_ListEntry_Base::NativeOnListEntryWidgetHovered(bool bIsHovered)
 {
 	// In some cases (when the widget is out of sight), IsListItemSelected throws since it does not check for nullptr, we need to do it manually
 	BP_OnListEntryWidgetHovered(bIsHovered, GetListItem() ? IsListItemSelected() : false);
+
+	if (bIsHovered)
+	{
+		BP_OnToggleEntryWidgetHighlightState(true);
+	}
+	else
+	{
+		BP_OnToggleEntryWidgetHighlightState(GetListItem() && IsListItemSelected());
+	}
 }
 
 void UIh_ListEntry_Base::NativeOnListItemObjectSet(UObject* ListItemObject)
@@ -44,6 +53,13 @@ void UIh_ListEntry_Base::NativeOnEntryReleased()
 
 	// Manually reset our widget highlight state back to default after it is released. This is to fix an issue when changing tabs with keyboard and all entries are highlighted
 	NativeOnListEntryWidgetHovered(false);
+}
+
+void UIh_ListEntry_Base::NativeOnItemSelectionChanged(bool bIsSelected)
+{
+	IUserObjectListEntry::NativeOnItemSelectionChanged(bIsSelected);
+
+	BP_OnToggleEntryWidgetHighlightState(bIsSelected);
 }
 
 void UIh_ListEntry_Base::OnOwningListDataObjectSet(UIh_ListDataObject_Base* InOwningListDataObject)
