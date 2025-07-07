@@ -2,6 +2,7 @@
 
 #include "Widgets/Components/Ih_CommonButtonBase.h"
 
+#include "CommonLazyImage.h"
 #include "CommonTextBlock.h"
 #include "Subsystems/Ih_UISubsystem.h"
 
@@ -21,6 +22,14 @@ FText UIh_CommonButtonBase::GetButtonDisplayText() const
 	}
 
 	return FText();
+}
+
+void UIh_CommonButtonBase::SetButtonDisplayImage(const FSlateBrush& InBrush)
+{
+	if (CommonLazyImage_ButtonImage)
+	{
+		CommonLazyImage_ButtonImage->SetBrush(InBrush);
+	}
 }
 
 void UIh_CommonButtonBase::NativePreConstruct()

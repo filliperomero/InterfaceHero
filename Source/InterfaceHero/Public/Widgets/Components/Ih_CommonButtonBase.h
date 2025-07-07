@@ -6,6 +6,7 @@
 #include "CommonButtonBase.h"
 #include "Ih_CommonButtonBase.generated.h"
 
+class UCommonLazyImage;
 class UCommonTextBlock;
 
 UCLASS(Abstract, BlueprintType, meta = (DisableNativeTick))
@@ -20,6 +21,9 @@ public:
 	UFUNCTION()
 	FText GetButtonDisplayText() const;
 
+	UFUNCTION(BlueprintCallable)
+	void SetButtonDisplayImage(const FSlateBrush& InBrush);
+
 private:
 	virtual void NativePreConstruct() override;
 	
@@ -30,6 +34,9 @@ private:
 	/** Bound Widgets */
 	UPROPERTY(meta=(BindWidgetOptional))
 	TObjectPtr<UCommonTextBlock> CommonTextBlock_ButtonText;
+
+	UPROPERTY(BlueprintReadOnly, meta = (BindWidgetOptional, AllowPrivateAccess="true"))
+	TObjectPtr<UCommonLazyImage> CommonLazyImage_ButtonImage;
 	/** Bound Widgets */
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "IH Button", meta=(AllowPrivateAccess="true"))
