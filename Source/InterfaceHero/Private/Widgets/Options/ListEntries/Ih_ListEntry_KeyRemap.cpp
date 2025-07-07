@@ -4,6 +4,14 @@
 #include "Widgets/Components/Ih_CommonButtonBase.h"
 #include "Widgets/Options/DataObjects/Ih_ListDataObject_KeyRemap.h"
 
+void UIh_ListEntry_KeyRemap::NativeOnInitialized()
+{
+	Super::NativeOnInitialized();
+
+	CommonButton_RemapKey->OnClicked().AddUObject(this, &ThisClass::OnRemapKeyButtonClicked);
+	CommonButton_ResetKeyBinding->OnClicked().AddUObject(this, &ThisClass::OnResetKeyBindingButtonClicked);
+}
+
 void UIh_ListEntry_KeyRemap::OnOwningListDataObjectSet(UIh_ListDataObject_Base* InOwningListDataObject)
 {
 	Super::OnOwningListDataObjectSet(InOwningListDataObject);
@@ -19,4 +27,12 @@ void UIh_ListEntry_KeyRemap::OnOwningListDataObjectModified(UIh_ListDataObject_B
 	{
 		CommonButton_RemapKey->SetButtonDisplayImage(CachedOwningKeyRemapDataObject->GetIconFromCurrentKey());
 	}
+}
+
+void UIh_ListEntry_KeyRemap::OnRemapKeyButtonClicked()
+{
+}
+
+void UIh_ListEntry_KeyRemap::OnResetKeyBindingButtonClicked()
+{
 }

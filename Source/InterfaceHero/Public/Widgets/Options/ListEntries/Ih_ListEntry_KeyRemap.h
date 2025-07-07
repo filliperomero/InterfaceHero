@@ -15,10 +15,15 @@ class INTERFACEHERO_API UIh_ListEntry_KeyRemap : public UIh_ListEntry_Base
 	GENERATED_BODY()
 
 protected:
+	virtual void NativeOnInitialized() override;
+	
 	virtual void OnOwningListDataObjectSet(UIh_ListDataObject_Base* InOwningListDataObject) override;
 	virtual void OnOwningListDataObjectModified(UIh_ListDataObject_Base* OwningModifiedData, EIh_OptionsListDataModifyReason ModifyReason) override;
 
 private:
+	void OnRemapKeyButtonClicked();
+	void OnResetKeyBindingButtonClicked();
+	
 	/** Bound Widgets */
 	UPROPERTY(BlueprintReadOnly, meta = (BindWidget, AllowPrivateAccess="true"))
 	TObjectPtr<UIh_CommonButtonBase> CommonButton_RemapKey;
