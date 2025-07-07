@@ -18,8 +18,11 @@ class INTERFACEHERO_API UIh_ListDataObject_KeyRemap : public UIh_ListDataObject_
 
 public:
 	void InitKeyRemapData(UEnhancedInputUserSettings* InOwningInputUserSettings, UEnhancedPlayerMappableKeyProfile* InOwningKeyProfile, ECommonInputType InDesiredInputKeyType, const FPlayerKeyMapping& InOwningPlayerKeyMapping);
+	FSlateBrush GetIconFromCurrentKey() const;
 
 private:
+	FPlayerKeyMapping* GetOwningKeyMapping() const;
+	
 	UPROPERTY(Transient)
 	TObjectPtr<UEnhancedInputUserSettings> OwningInputUserSettings;
 
