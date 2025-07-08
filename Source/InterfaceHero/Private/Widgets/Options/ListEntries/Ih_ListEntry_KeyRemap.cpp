@@ -6,6 +6,7 @@
 #include "Ih_GameplayTags.h"
 #include "Subsystems/Ih_UISubsystem.h"
 #include "Widgets/Components/Ih_CommonButtonBase.h"
+#include "Widgets/Options/Ih_KeyRemapScreen.h"
 #include "Widgets/Options/DataObjects/Ih_ListDataObject_KeyRemap.h"
 
 void UIh_ListEntry_KeyRemap::NativeOnInitialized()
@@ -38,9 +39,16 @@ void UIh_ListEntry_KeyRemap::OnRemapKeyButtonClicked()
 	UIh_UISubsystem::Get(this)->PushSoftWidgetToStackAsync(
 		InterfaceHeroGameplayTags::WidgetStack_Modal,
 		UIh_FunctionLibrary::GetSoftWidgetClassByTag(InterfaceHeroGameplayTags::Widget_KeyRemapScreen),
-		[](EAsyncPushWidgetState PushState, UIh_ActivatableBase* PushedWidget)
+		[this](EAsyncPushWidgetState PushState, UIh_ActivatableBase* PushedWidget)
 		{
-			
+			if (PushState == EAsyncPushWidgetState::OnCreatedBeforePush)
+			{
+				UIh_KeyRemapScreen* KeyRemapScreen = CastChecked<UIh_KeyRemapScreen>(PushedWidget);
+				if (IsValid(CachedOwningKeyRemapDataObject))
+				{
+					KeyRemapScreen->SetDesiredInputTypeToFilter(CachedOwningKeyRemapDataObject->GetDesiredInputKeyType());
+				}
+			}
 		}
 	);
 }

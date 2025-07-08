@@ -32,4 +32,7 @@ private:
 	ECommonInputType DesiredInputKeyType;
 	FName OwningMappingName;
 	EPlayerMappableKeySlot OwningMappableKeySlot;
+
+public:
+	FORCEINLINE ECommonInputType GetDesiredInputKeyType() const { return DesiredInputKeyType; }
 };

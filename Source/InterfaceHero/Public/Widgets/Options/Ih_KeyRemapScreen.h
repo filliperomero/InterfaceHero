@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "CommonInputTypeEnum.h"
 #include "Widgets/Ih_ActivatableBase.h"
 #include "Ih_KeyRemapScreen.generated.h"
 
@@ -13,6 +14,9 @@ UCLASS(Abstract, BlueprintType, meta = (DisableNativeTick))
 class INTERFACEHERO_API UIh_KeyRemapScreen : public UIh_ActivatableBase
 {
 	GENERATED_BODY()
+
+public:
+	void SetDesiredInputTypeToFilter(const ECommonInputType InDesiredInputType);
 
 protected:
 	virtual void NativeOnActivated() override;
@@ -25,4 +29,6 @@ private:
 	/** Bound Widgets */
 
 	TSharedPtr<FKeyRemapScreenInputPreprocessor> InputPreprocessor;
+
+	ECommonInputType DesiredInputType;
 };
