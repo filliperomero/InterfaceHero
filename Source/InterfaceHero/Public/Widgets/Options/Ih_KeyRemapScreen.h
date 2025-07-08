@@ -7,6 +7,7 @@
 #include "Ih_KeyRemapScreen.generated.h"
 
 class UCommonRichTextBlock;
+class FKeyRemapScreenInputPreprocessor;
 
 UCLASS(Abstract, BlueprintType, meta = (DisableNativeTick))
 class INTERFACEHERO_API UIh_KeyRemapScreen : public UIh_ActivatableBase
@@ -22,4 +23,6 @@ private:
 	UPROPERTY(meta = (BindWidget))
 	TObjectPtr<UCommonRichTextBlock> CommonRichText_RemapMessage;
 	/** Bound Widgets */
+
+	TSharedPtr<FKeyRemapScreenInputPreprocessor> InputPreprocessor;
 };
