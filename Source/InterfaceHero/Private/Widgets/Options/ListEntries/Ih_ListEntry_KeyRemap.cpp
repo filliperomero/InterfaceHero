@@ -1,6 +1,10 @@
 ﻿// Copyright Fillipe Romero. All Rights Reserved.
 
 #include "Widgets/Options/ListEntries/Ih_ListEntry_KeyRemap.h"
+
+#include "Ih_FunctionLibrary.h"
+#include "Ih_GameplayTags.h"
+#include "Subsystems/Ih_UISubsystem.h"
 #include "Widgets/Components/Ih_CommonButtonBase.h"
 #include "Widgets/Options/DataObjects/Ih_ListDataObject_KeyRemap.h"
 
@@ -31,6 +35,14 @@ void UIh_ListEntry_KeyRemap::OnOwningListDataObjectModified(UIh_ListDataObject_B
 
 void UIh_ListEntry_KeyRemap::OnRemapKeyButtonClicked()
 {
+	UIh_UISubsystem::Get(this)->PushSoftWidgetToStackAsync(
+		InterfaceHeroGameplayTags::WidgetStack_Modal,
+		UIh_FunctionLibrary::GetSoftWidgetClassByTag(InterfaceHeroGameplayTags::Widget_KeyRemapScreen),
+		[](EAsyncPushWidgetState PushState, UIh_ActivatableBase* PushedWidget)
+		{
+			
+		}
+	);
 }
 
 void UIh_ListEntry_KeyRemap::OnResetKeyBindingButtonClicked()
