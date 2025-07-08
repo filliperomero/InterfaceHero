@@ -2,6 +2,7 @@
 
 #include "Widgets/Options/Ih_KeyRemapScreen.h"
 #include "CommonInputTypeEnum.h"
+#include "CommonRichTextBlock.h"
 #include "Framework/Application/IInputProcessor.h"
 
 class FKeyRemapScreenInputPreprocessor : public IInputProcessor
@@ -73,8 +74,27 @@ void UIh_KeyRemapScreen::NativeOnActivated()
 	Super::NativeOnActivated();
 
 	InputPreprocessor = MakeShared<FKeyRemapScreenInputPreprocessor>(DesiredInputType);
+	InputPreprocessor->OnInputPreProcessorKeyPressed.BindUObject(this, &ThisClass::OnValidKeyPressedDetected);
+	InputPreprocessor->OnInputPreProcessorKeySelectCanceled.BindUObject(this, &ThisClass::OnKeySelectedCanceled);
 
 	FSlateApplication::Get().RegisterInputPreProcessor(InputPreprocessor, -1);
+
+	FString InputDeviceName;
+
+	switch (DesiredInputType) {
+	case ECommonInputType::MouseAndKeyboard:
+		InputDeviceName = TEXT("Mouse & Keyboard");
+		break;
+	case ECommonInputType::Gamepad:
+		InputDeviceName = TEXT("Gamepad");
+		break;
+	default:
+		break;
+	}
+
+	const FString DisplayRichMessage = FString::Printf(TEXT("<KeyRemapDefault>Press any</> <KeyRemapHighlight>%s</> <KeyRemapDefault>key.</>"), *InputDeviceName);
+
+	CommonRichText_RemapMessage->SetText(FText::FromString(DisplayRichMessage));
 }
 
 void UIh_KeyRemapScreen::NativeOnDeactivated()
@@ -87,6 +107,44 @@ void UIh_KeyRemapScreen::NativeOnDeactivated()
 
 		InputPreprocessor.Reset();
 	}
+}
+
+void UIh_KeyRemapScreen::OnValidKeyPressedDetected(const FKey& PressedKey)
+{
+	RequestDeactivateWidget(
+		[this, PressedKey]()
+		{
+			OnKeyRemapScreenKeyPressed.ExecuteIfBound(PressedKey);
+		}
+	);
+}
+
+void UIh_KeyRemapScreen::OnKeySelectedCanceled(const FString& CanceledReason)
+{
+	RequestDeactivateWidget(
+		[this, CanceledReason]()
+		{
+			OnKeyRemapScreenKeySelectCanceled.ExecuteIfBound(CanceledReason);
+		}
+	);
+}
+
+void UIh_KeyRemapScreen::RequestDeactivateWidget(TFunction<void()> PreDeactivateCallback)
+{
+	// Delay a tick to make sure the input is processed correctly
+	FTSTicker::GetCoreTicker().AddTicker(
+		FTickerDelegate::CreateLambda(
+			[PreDeactivateCallback, this](float DeltaTime)->bool
+			{
+				PreDeactivateCallback();
+
+				DeactivateWidget();
+
+				// false will stop the "ticking"
+				return false;
+			}
+		)
+	);
 }
 
 void UIh_KeyRemapScreen::SetDesiredInputTypeToFilter(const ECommonInputType InDesiredInputType)
