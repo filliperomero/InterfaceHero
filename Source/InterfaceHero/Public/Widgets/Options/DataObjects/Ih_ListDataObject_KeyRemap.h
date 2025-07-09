@@ -20,6 +20,8 @@ public:
 	void InitKeyRemapData(UEnhancedInputUserSettings* InOwningInputUserSettings, UEnhancedPlayerMappableKeyProfile* InOwningKeyProfile, ECommonInputType InDesiredInputKeyType, const FPlayerKeyMapping& InOwningPlayerKeyMapping);
 	FSlateBrush GetIconFromCurrentKey() const;
 
+	void BindNewInputKey(const FKey& InNewKey);
+
 private:
 	FPlayerKeyMapping* GetOwningKeyMapping() const;
 	

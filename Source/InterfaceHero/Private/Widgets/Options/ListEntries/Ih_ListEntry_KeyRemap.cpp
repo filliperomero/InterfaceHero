@@ -44,6 +44,9 @@ void UIh_ListEntry_KeyRemap::OnRemapKeyButtonClicked()
 			if (PushState == EAsyncPushWidgetState::OnCreatedBeforePush)
 			{
 				UIh_KeyRemapScreen* KeyRemapScreen = CastChecked<UIh_KeyRemapScreen>(PushedWidget);
+				KeyRemapScreen->OnKeyRemapScreenKeyPressed.BindUObject(this, &ThisClass::OnKeyToRemapPressed);
+				KeyRemapScreen->OnKeyRemapScreenKeySelectCanceled.BindUObject(this, &ThisClass::OnKeyRemapCanceled);
+				
 				if (IsValid(CachedOwningKeyRemapDataObject))
 				{
 					KeyRemapScreen->SetDesiredInputTypeToFilter(CachedOwningKeyRemapDataObject->GetDesiredInputKeyType());
@@ -55,4 +58,22 @@ void UIh_ListEntry_KeyRemap::OnRemapKeyButtonClicked()
 
 void UIh_ListEntry_KeyRemap::OnResetKeyBindingButtonClicked()
 {
+}
+
+void UIh_ListEntry_KeyRemap::OnKeyToRemapPressed(const FKey& PressedKey)
+{
+	if (IsValid(CachedOwningKeyRemapDataObject))
+	{
+		CachedOwningKeyRemapDataObject->BindNewInputKey(PressedKey);
+	}
+}
+
+void UIh_ListEntry_KeyRemap::OnKeyRemapCanceled(const FString& CanceledReason)
+{
+	UIh_UISubsystem::Get(this)->PushConfirmScreenToModalStackAsync(
+		EIh_ConfirmScreenType::Ok,
+		FText::FromString(TEXT("Key Remap")),
+		FText::FromString(CanceledReason),
+		[](EIh_ConfirmScreenButtonType ClickedButton){}
+	);
 }
