@@ -91,28 +91,8 @@ void UIh_ConfirmScreen::InitConfirmScreen(UIh_ConfirmScreenInfoObject* InScreenI
 
 	for (FIh_ConfirmScreenButtonInfo& AvailableButtonInfo : InScreenInfoObject->AvailableScreenButtons)
 	{
-		UCommonInputSettings& CommonInputSettings = ICommonInputModule::GetSettings();
-		FDataTableRowHandle InputActionRowHandle;
-		
-		switch (AvailableButtonInfo.ConfirmScreenButtonType)
-		{
-		// This case is not necessary since if we apply this, even if we click "No", it will act like "Yes". Common UI will take care of the normal click
-		// case EIh_ConfirmScreenButtonType::Confirmed:
-		// 	InputActionRowHandle = CommonInputSettings.GetDefaultClickAction();
-		// 	break;
-		case EIh_ConfirmScreenButtonType::Cancelled:
-			InputActionRowHandle = CommonInputSettings.GetDefaultBackAction();
-			break;
-		case EIh_ConfirmScreenButtonType::Closed:
-			InputActionRowHandle = CommonInputSettings.GetDefaultBackAction();
-			break;
-		default:
-			break;
-		}
-		
 		UIh_CommonButtonBase* AddedButton = DynamicEntryBox_Buttons->CreateEntry<UIh_CommonButtonBase>();
 		AddedButton->SetButtonText(AvailableButtonInfo.ButtonTextToDisplay);
-		AddedButton->SetTriggeringInputAction(InputActionRowHandle);
 		AddedButton->OnClicked().AddLambda(
 			[ClickedButtonCallback, AvailableButtonInfo, this]()
 			{

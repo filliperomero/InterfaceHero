@@ -61,6 +61,33 @@ void UIh_ListEntry_KeyRemap::OnRemapKeyButtonClicked()
 void UIh_ListEntry_KeyRemap::OnResetKeyBindingButtonClicked()
 {
 	SelectThisEntryWidget();
+
+	if (!IsValid(CachedOwningKeyRemapDataObject)) return;
+
+	if (!CachedOwningKeyRemapDataObject->CanResetBackToDefaultValue())
+	{
+		UIh_UISubsystem::Get(this)->PushConfirmScreenToModalStackAsync(
+			EIh_ConfirmScreenType::Ok,
+			FText::FromString(TEXT("Reset Key Mapping")),
+			FText::FromString(TEXT("The key binding for ") + CachedOwningKeyRemapDataObject->GetDataDisplayName().ToString() + TEXT(" is already set to default.")),
+			[](EIh_ConfirmScreenButtonType ClickedButton){}
+		);
+
+		return;
+	}
+
+	UIh_UISubsystem::Get(this)->PushConfirmScreenToModalStackAsync(
+			EIh_ConfirmScreenType::YesNo,
+			FText::FromString(TEXT("Reset Key Mapping")),
+			FText::FromString(TEXT("Are you sure you want to reset the key binding for ") + CachedOwningKeyRemapDataObject->GetDataDisplayName().ToString() + TEXT(" ?")),
+			[this](EIh_ConfirmScreenButtonType ClickedButton)
+			{
+				if (ClickedButton == EIh_ConfirmScreenButtonType::Confirmed)
+				{
+					CachedOwningKeyRemapDataObject->TryResetBackToDefaultValue();
+				}
+			}
+		);
 }
 
 void UIh_ListEntry_KeyRemap::OnKeyToRemapPressed(const FKey& PressedKey)
