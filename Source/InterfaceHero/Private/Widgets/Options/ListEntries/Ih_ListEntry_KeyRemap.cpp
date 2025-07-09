@@ -36,6 +36,8 @@ void UIh_ListEntry_KeyRemap::OnOwningListDataObjectModified(UIh_ListDataObject_B
 
 void UIh_ListEntry_KeyRemap::OnRemapKeyButtonClicked()
 {
+	SelectThisEntryWidget();
+	
 	UIh_UISubsystem::Get(this)->PushSoftWidgetToStackAsync(
 		InterfaceHeroGameplayTags::WidgetStack_Modal,
 		UIh_FunctionLibrary::GetSoftWidgetClassByTag(InterfaceHeroGameplayTags::Widget_KeyRemapScreen),
@@ -58,6 +60,7 @@ void UIh_ListEntry_KeyRemap::OnRemapKeyButtonClicked()
 
 void UIh_ListEntry_KeyRemap::OnResetKeyBindingButtonClicked()
 {
+	SelectThisEntryWidget();
 }
 
 void UIh_ListEntry_KeyRemap::OnKeyToRemapPressed(const FKey& PressedKey)
