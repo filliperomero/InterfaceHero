@@ -109,3 +109,14 @@ void UIh_ConfirmScreen::InitConfirmScreen(UIh_ConfirmScreenInfoObject* InScreenI
 		DynamicEntryBox_Buttons->GetAllEntries().Last()->SetFocus();
 	}
 }
+
+UWidget* UIh_ConfirmScreen::NativeGetDesiredFocusTarget() const
+{
+	if (DynamicEntryBox_Buttons->GetNumEntries() != 0)
+	{
+		// Set Focus on the last Button. So if we have 2 buttons and the last one is No/Cancel, our gamepad will focus on this button so we don't accidentally press the wrong button
+		DynamicEntryBox_Buttons->GetAllEntries().Last()->SetFocus();
+	}
+
+	return Super::NativeGetDesiredFocusTarget();
+}

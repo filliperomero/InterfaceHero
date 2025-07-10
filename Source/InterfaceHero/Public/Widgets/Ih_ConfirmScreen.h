@@ -50,6 +50,9 @@ class INTERFACEHERO_API UIh_ConfirmScreen : public UIh_ActivatableBase
 public:
 	void InitConfirmScreen(UIh_ConfirmScreenInfoObject* InScreenInfoObject, TFunction<void(EIh_ConfirmScreenButtonType)> ClickedButtonCallback);
 
+protected:
+	virtual UWidget* NativeGetDesiredFocusTarget() const override;
+
 private:
 	UPROPERTY(meta=(BindWidget))
 	TObjectPtr<UCommonTextBlock> CommonTextBlock_Title;
