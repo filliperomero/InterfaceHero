@@ -1,15 +1,19 @@
 ﻿// Copyright Fillipe Romero. All Rights Reserved.
 
 #include "Widgets/Options/Ih_KeyRemapScreen.h"
+#include "CommonInputSubsystem.h"
 #include "CommonInputTypeEnum.h"
 #include "CommonRichTextBlock.h"
+#include "CommonUITypes.h"
+#include "ICommonInputModule.h"
 #include "Framework/Application/IInputProcessor.h"
 
 class FKeyRemapScreenInputPreprocessor : public IInputProcessor
 {
 public:
-	FKeyRemapScreenInputPreprocessor(const ECommonInputType InInputTypeToListenTo)
+	FKeyRemapScreenInputPreprocessor(const ECommonInputType InInputTypeToListenTo, ULocalPlayer* InOwningLocalPlayer)
 		: InputTypeToListenTo(InInputTypeToListenTo)
+		, WeakOwningLocalPlayer(InOwningLocalPlayer)
 	{ }
 
 	DECLARE_DELEGATE_OneParam(FOnInputPreProcessorKeySelectCanceledDelegate, const FString&/*CanceledReason*/)
@@ -42,16 +46,32 @@ protected:
 			return;
 		}
 
+		UCommonInputSubsystem* CommonInputSubsystem = UCommonInputSubsystem::Get(WeakOwningLocalPlayer.Get());
+		check(CommonInputSubsystem);
+
+		ECommonInputType CurrentInputType = CommonInputSubsystem->GetCurrentInputType();
+
 		switch (InputTypeToListenTo)
 		{
 		case ECommonInputType::MouseAndKeyboard:
-			if (InPressedKey.IsGamepadKey())
+			if (InPressedKey.IsGamepadKey() || CurrentInputType == ECommonInputType::Gamepad)
 			{
 				OnInputPreProcessorKeySelectCanceled.ExecuteIfBound(TEXT("Detected Gamepad Key pressed for Keyboard Inputs. Key Remap has been canceled."));
 				return;
 			}
 			break;
 		case ECommonInputType::Gamepad:
+			// Common UI hard codes the Confirm Button as Left Mouse and we need to take care of this special case if we want to use the "confirm button" in the gamepad in any remap entry
+			if (CurrentInputType == ECommonInputType::Gamepad && InPressedKey == EKeys::LeftMouseButton)
+			{
+				FCommonInputActionDataBase* InputActionData = ICommonInputModule::GetSettings().GetDefaultClickAction().GetRow<FCommonInputActionDataBase>(TEXT(""));
+				check(InputActionData);
+				
+				OnInputPreProcessorKeyPressed.ExecuteIfBound(InputActionData->GetDefaultGamepadInputTypeInfo().GetKey());
+
+				return;
+			}
+			
 			if (!InPressedKey.IsGamepadKey())
 			{
 				OnInputPreProcessorKeySelectCanceled.ExecuteIfBound(TEXT("Detected Keyboard/Mouse Key pressed for Gamepad Inputs. Key Remap has been canceled."));
@@ -67,13 +87,14 @@ protected:
 
 private:
 	ECommonInputType InputTypeToListenTo;
+	TWeakObjectPtr<ULocalPlayer> WeakOwningLocalPlayer;
 };
 
 void UIh_KeyRemapScreen::NativeOnActivated()
 {
 	Super::NativeOnActivated();
 
-	InputPreprocessor = MakeShared<FKeyRemapScreenInputPreprocessor>(DesiredInputType);
+	InputPreprocessor = MakeShared<FKeyRemapScreenInputPreprocessor>(DesiredInputType, GetOwningLocalPlayer());
 	InputPreprocessor->OnInputPreProcessorKeyPressed.BindUObject(this, &ThisClass::OnValidKeyPressedDetected);
 	InputPreprocessor->OnInputPreProcessorKeySelectCanceled.BindUObject(this, &ThisClass::OnKeySelectedCanceled);
 
