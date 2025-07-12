@@ -6,6 +6,8 @@
 #include "Subsystems/GameInstanceSubsystem.h"
 #include "Ih_LoadingScreenSubsystem.generated.h"
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnLoadingReasonUpdatedDelegate, const FString&, CurrentLoadingReason);
+
 UCLASS()
 class INTERFACEHERO_API UIh_LoadingScreenSubsystem : public UGameInstanceSubsystem, public FTickableGameObject
 {
@@ -24,7 +26,21 @@ public:
 	virtual TStatId GetStatId() const override;
 	/** FTickableGameObject Interface */
 
+	UPROPERTY(BlueprintAssignable)
+	FOnLoadingReasonUpdatedDelegate OnLoadingReasonUpdated;
+
 private:
 	void OnMapPreLoaded(const FWorldContext& WorldContext, const FString& MapName);
 	void OnMapPostLoaded(UWorld* LoadedWorld);
+
+	bool IsPreLoadScreenActive() const;
+	bool CheckTheNeedToShowLoadingScreen();
+	bool ShouldShowLoadingScreen();
+	void TryDisplayLoadingScreenIfNone();
+	void TryUpdateLoadingScreen();
+
+	bool bIsCurrentlyLoadingMap { false };
+	float HoldLoadingScreenStartUpTime { -1.f };
+	FString CurrentLoadingReason;
+	TSharedPtr<SWidget> CachedCreatedLoadingScreenWidget;
 };

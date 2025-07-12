@@ -20,7 +20,8 @@ public class InterfaceHero : ModuleRules
 			"CommonUI",
 			"DeveloperSettings",
 			"CommonInput",
-			"PropertyPath"
+			"PropertyPath",
+			"PreLoadScreen"
 		});
 
 		PrivateDependencyModuleNames.AddRange(new string[] { "CommonUI", "CommonInput" });
