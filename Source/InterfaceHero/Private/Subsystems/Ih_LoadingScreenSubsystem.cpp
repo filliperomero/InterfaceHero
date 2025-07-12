@@ -186,6 +186,15 @@ void UIh_LoadingScreenSubsystem::TryDisplayLoadingScreenIfNone()
 	GetGameInstance()->GetGameViewportClient()->AddViewportWidgetContent(CachedCreatedLoadingScreenWidget.ToSharedRef(), 1000);
 }
 
+void UIh_LoadingScreenSubsystem::TryRemoveLoadingScreen()
+{
+	if (!CachedCreatedLoadingScreenWidget.IsValid()) return;
+
+	GetGameInstance()->GetGameViewportClient()->RemoveViewportWidgetContent(CachedCreatedLoadingScreenWidget.ToSharedRef());
+
+	CachedCreatedLoadingScreenWidget.Reset();
+}
+
 void UIh_LoadingScreenSubsystem::TryUpdateLoadingScreen()
 {
 	// Check if there's any startUp loading screen that's currently active
@@ -198,6 +207,8 @@ void UIh_LoadingScreenSubsystem::TryUpdateLoadingScreen()
 	}
 	else
 	{
+		TryRemoveLoadingScreen();
+		HoldLoadingScreenStartUpTime = -1.f;
 		SetTickableTickType(ETickableTickType::Never);
 	}
 }
