@@ -3,6 +3,7 @@
 #include "Subsystems/Ih_LoadingScreenSubsystem.h"
 #include "PreLoadScreenManager.h"
 #include "Blueprint/UserWidget.h"
+#include "Interfaces/Ih_LoadingScreenInterface.h"
 #include "Settings/Ih_LoadingScreenSettings.h"
 
 bool UIh_LoadingScreenSubsystem::ShouldCreateSubsystem(UObject* Outer) const
@@ -184,6 +185,8 @@ void UIh_LoadingScreenSubsystem::TryDisplayLoadingScreenIfNone()
 	CachedCreatedLoadingScreenWidget = CreatedWidget->TakeWidget();
 
 	GetGameInstance()->GetGameViewportClient()->AddViewportWidgetContent(CachedCreatedLoadingScreenWidget.ToSharedRef(), 1000);
+
+	NotifyLoadingScreenVisibilityChanged(true);
 }
 
 void UIh_LoadingScreenSubsystem::TryRemoveLoadingScreen()
@@ -193,6 +196,8 @@ void UIh_LoadingScreenSubsystem::TryRemoveLoadingScreen()
 	GetGameInstance()->GetGameViewportClient()->RemoveViewportWidgetContent(CachedCreatedLoadingScreenWidget.ToSharedRef());
 
 	CachedCreatedLoadingScreenWidget.Reset();
+
+	NotifyLoadingScreenVisibilityChanged(false);
 }
 
 void UIh_LoadingScreenSubsystem::TryUpdateLoadingScreen()
@@ -210,5 +215,33 @@ void UIh_LoadingScreenSubsystem::TryUpdateLoadingScreen()
 		TryRemoveLoadingScreen();
 		HoldLoadingScreenStartUpTime = -1.f;
 		SetTickableTickType(ETickableTickType::Never);
+	}
+}
+
+void UIh_LoadingScreenSubsystem::NotifyLoadingScreenVisibilityChanged(bool bIsVisible)
+{
+	for (ULocalPlayer* ExistingLocalPlayer : GetGameInstance()->GetLocalPlayers())
+	{
+		if (!IsValid(ExistingLocalPlayer)) continue;
+
+		if (APlayerController* PlayerController = ExistingLocalPlayer->GetPlayerController(GetGameInstance()->GetWorld()))
+		{
+			if (PlayerController->Implements<UIh_LoadingScreenInterface>())
+			{
+				if (bIsVisible) IIh_LoadingScreenInterface::Execute_OnLoadingScreenActivated(PlayerController);
+				else IIh_LoadingScreenInterface::Execute_OnLoadingScreenDeactivated(PlayerController);
+			}
+
+			if (APawn* OwningPawn= PlayerController->GetPawn())
+			{
+				if (OwningPawn->Implements<UIh_LoadingScreenInterface>())
+				{
+					if (bIsVisible) IIh_LoadingScreenInterface::Execute_OnLoadingScreenActivated(OwningPawn);
+					else IIh_LoadingScreenInterface::Execute_OnLoadingScreenDeactivated(OwningPawn);
+				}
+			}
+		}
+
+		// The Code for notifying other objects in the world goes here
 	}
 }

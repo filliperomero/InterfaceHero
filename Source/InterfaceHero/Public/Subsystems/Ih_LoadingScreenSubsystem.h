@@ -39,6 +39,7 @@ private:
 	void TryDisplayLoadingScreenIfNone();
 	void TryRemoveLoadingScreen();
 	void TryUpdateLoadingScreen();
+	void NotifyLoadingScreenVisibilityChanged(bool bIsVisible);
 
 	bool bIsCurrentlyLoadingMap { false };
 	float HoldLoadingScreenStartUpTime { -1.f };
