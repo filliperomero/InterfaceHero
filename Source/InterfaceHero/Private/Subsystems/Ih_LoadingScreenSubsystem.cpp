@@ -196,8 +196,6 @@ void UIh_LoadingScreenSubsystem::TryRemoveLoadingScreen()
 	GetGameInstance()->GetGameViewportClient()->RemoveViewportWidgetContent(CachedCreatedLoadingScreenWidget.ToSharedRef());
 
 	CachedCreatedLoadingScreenWidget.Reset();
-
-	NotifyLoadingScreenVisibilityChanged(false);
 }
 
 void UIh_LoadingScreenSubsystem::TryUpdateLoadingScreen()
@@ -214,6 +212,7 @@ void UIh_LoadingScreenSubsystem::TryUpdateLoadingScreen()
 	{
 		TryRemoveLoadingScreen();
 		HoldLoadingScreenStartUpTime = -1.f;
+		NotifyLoadingScreenVisibilityChanged(false);
 		SetTickableTickType(ETickableTickType::Never);
 	}
 }
